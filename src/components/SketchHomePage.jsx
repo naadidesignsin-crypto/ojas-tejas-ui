@@ -14,6 +14,7 @@ import artGallery from "../assets/programs/art-gallery.png";
 import creativeCourses from "../assets/programs/creative-courses.png";
 import { createDemoBooking } from "../api/demoBookingApi";
 import ActivityDrawingModal from "./ActivityDrawingModal.jsx";
+import WorkshopDatesModal from "./WorkshopDatesModal.jsx";
 import "../styles/sketch-home.css";
 
 const initialForm = {
@@ -35,6 +36,7 @@ function SketchHomePage() {
   const [formError, setFormError] = useState("");
   const [showActivityModal, setShowActivityModal] = useState(false);
   const [videoStarted, setVideoStarted] = useState(false);
+  const [showWorkshopModal, setShowWorkshopModal] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -302,7 +304,7 @@ function SketchHomePage() {
               <img src={artWorkshops} alt="Art workshops" />
               <h3>Art workshops</h3>
               <p>Exciting themed workshops for kids.</p>
-              <button onClick={() => scrollTo("trial")}>
+              <button onClick={() => setShowWorkshopModal(true)}>
                 See Workshop
               </button>
             </article>
@@ -366,6 +368,16 @@ function SketchHomePage() {
       {showActivityModal && (
         <ActivityDrawingModal onClose={() => setShowActivityModal(false)} />
       )}
+
+       {showWorkshopModal && (
+         <WorkshopDatesModal
+           onClose={() => setShowWorkshopModal(false)}
+           onBookDemo={() => {
+             setShowWorkshopModal(false);
+             scrollTo("trial");
+           }}
+         />
+       )}
     </div>
   );
 }
