@@ -81,6 +81,7 @@ function SketchHomePage() {
   return (
     <div className="sketch-page">
       <div className="sketch-top-strip">
+        <span>🎨 Trunkful of Colors, Brushful of Dreams</span>
 
         <div>
           <span>●</span>
@@ -109,7 +110,19 @@ function SketchHomePage() {
       <main>
         <section className="sketch-hero" id="home">
           <div className="trial-card" id="trial">
-            <h1>Book a free Trial Session</h1>
+            <div className="hero-title-wrap">
+              <h1>
+                <span>Book a free Trial Session</span>
+              </h1>
+
+              <div className="hero-art-burst" aria-hidden="true">
+                <span className="art-float art-float-1">🎨</span>
+                <span className="art-float art-float-2">🖌️</span>
+                <span className="art-float art-float-3">⭐</span>
+                <span className="art-float art-float-4">💙</span>
+                <span className="art-float art-float-5">✨</span>
+              </div>
+            </div>
 
             <form onSubmit={handleSubmit}>
               <input
