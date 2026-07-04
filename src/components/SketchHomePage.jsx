@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import logo from "../assets/ojas-logo-header.png";
+import boardImage from "../assets/board-transparent.png";
+import colorImage from "../assets/color-transparent.png";
 import { createDemoBooking } from "../api/demoBookingApi";
 import ActivityDrawingModal from "./ActivityDrawingModal.jsx";
 import "../styles/sketch-home.css";
@@ -79,7 +81,6 @@ function SketchHomePage() {
   return (
     <div className="sketch-page">
       <div className="sketch-top-strip">
-        <span>🎨 Trunkful of Colors, Brushful of Dreams</span>
 
         <div>
           <span>●</span>
@@ -181,50 +182,47 @@ function SketchHomePage() {
               {formError && <p className="trial-error">{formError}</p>}
             </form>
 
-            <div className="paint-tools">
-              <span>🎨</span>
-              <span>🖌️</span>
+            <div className="paint-tools realistic-tools">
+              <img src={colorImage} alt="Color palette and brush" />
             </div>
           </div>
 
-          <div className="video-easel">
-            <div className="easel-board">
-              <div className="video-ribbon">🎥 Ojas Art Class Preview</div>
-
-              <video
-                ref={videoRef}
-                src="/videos/client-demo.mp4"
-                className="intro-video"
-                controls={videoStarted}
-                onPlay={() => setVideoStarted(true)}
-                onPause={() => setVideoStarted(false)}
-                onEnded={() => setVideoStarted(false)}
+          <div className="video-easel realistic-video-easel">
+            <div className="real-board-wrap">
+              <img
+                src={boardImage}
+                alt="Art board"
+                className="real-board-image"
               />
 
-              {!videoStarted && (
-                <div className="video-overlay">
-                  <div className="video-art-preview">
+              <div className="real-video-screen">
+                <video
+                  ref={videoRef}
+                  src="/videos/client-demo.mp4"
+                  className="intro-video"
+                  controls={videoStarted}
+                  onPlay={() => setVideoStarted(true)}
+                  onPause={() => setVideoStarted(false)}
+                  onEnded={() => setVideoStarted(false)}
+                />
 
+                {!videoStarted && (
+                  <div className="video-overlay-real">
+                    <div className="video-ribbon-real">
+                      🎥 Ojas Art Class Preview
+                    </div>
+
+                    <button
+                      type="button"
+                      className="intro-play-button-real"
+                      onClick={playIntroVideo}
+                      aria-label="Play intro video"
+                    >
+                      ▶
+                    </button>
                   </div>
-
-                  <button
-                    type="button"
-                    className="intro-play-button"
-                    onClick={playIntroVideo}
-                    aria-label="Play intro video"
-                  >
-                    ▶
-                  </button>
-
-
-                </div>
-              )}
-            </div>
-
-            <div className="easel-legs">
-              <span></span>
-              <span></span>
-              <span></span>
+                )}
+              </div>
             </div>
           </div>
         </section>
