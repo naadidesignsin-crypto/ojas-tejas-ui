@@ -6,6 +6,7 @@ import {
   getPendingActivitySubmissions,
   approveActivitySubmission
 } from "../api/adminApi";
+import AdminWorkshops from "./AdminWorkshops.jsx";
 import "../styles/admin.css";
 
 function AdminPage() {
@@ -255,6 +256,7 @@ function AdminPage() {
             respective booking.
           </p>
         </div>
+        <AdminWorkshops authToken={authToken} />
 
         <div className="admin-table-wrapper">
           <table>
