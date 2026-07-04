@@ -4,7 +4,7 @@ import boardImage from "../assets/board-transparent.png";
 import colorImage from "../assets/color-transparent.png";
 import storyLedTeaching from "../assets/different/story-led-teaching.png";
 import smallGroups from "../assets/different/small-groups.png";
-import conceptCreateColor from "../assets/different/concept-create-color.png";
+import conceptCreateColor from "../assets/different/concept-create.png";
 import artTrainedEducator from "../assets/different/art-trained-educator.png";
 import liveOnlineArtClasses from "../assets/programs/live-online-art-classes.png";
 import summerArtCamp from "../assets/programs/summer-art-camp.png";
