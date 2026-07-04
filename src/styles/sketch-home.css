@@ -1574,3 +1574,160 @@
     height: 170px;
   }
 }
+
+.sketch-page .different-section::before {
+  content: none;
+  display: none;
+}
+
+/* Reduce the long blank space */
+.sketch-page .sketch-hero {
+  min-height: auto;
+  padding-top: 34px;
+  padding-bottom: 8px;
+  align-items: center;
+}
+
+.sketch-page .realistic-video-easel {
+  min-height: 455px;
+}
+
+.sketch-page .realistic-tools {
+  margin-top: 8px;
+}
+
+/* Bring section up */
+.sketch-page .different-section {
+  position: relative;
+  padding-top: 38px;
+  overflow: hidden;
+}
+
+/* Soft art background between sections */
+.sketch-page .different-section::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -92px;
+  width: min(900px, 86vw);
+  height: 170px;
+  transform: translateX(-50%);
+  border-radius: 48% 52% 55% 45%;
+  background:
+    radial-gradient(circle at 15% 48%, rgba(255, 98, 89, 0.22) 0 10px, transparent 12px),
+    radial-gradient(circle at 28% 34%, rgba(255, 210, 80, 0.26) 0 13px, transparent 15px),
+    radial-gradient(circle at 45% 58%, rgba(0, 74, 173, 0.16) 0 9px, transparent 11px),
+    radial-gradient(circle at 62% 38%, rgba(255, 98, 89, 0.2) 0 11px, transparent 13px),
+    radial-gradient(circle at 78% 55%, rgba(255, 210, 80, 0.25) 0 14px, transparent 16px),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.22), transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Keep title and cards above soft art */
+.sketch-page .client-different-title,
+.sketch-page .client-different-grid {
+  position: relative;
+  z-index: 2;
+}
+
+/* Small floating brush near title */
+.sketch-page .client-different-title::before {
+  content: "🖌️";
+  position: absolute;
+  left: 10%;
+  top: -34px;
+  font-size: 2.2rem;
+  transform: rotate(-18deg);
+  filter: drop-shadow(0 8px 12px rgba(0, 74, 173, 0.14));
+  animation: softBrushMove 4s ease-in-out infinite;
+}
+
+/* Small palette near title */
+.sketch-page .client-different-title::after {
+  content: "🎨";
+  position: absolute;
+  right: 11%;
+  top: -34px;
+  font-size: 2.2rem;
+  transform: rotate(12deg);
+  filter: drop-shadow(0 8px 12px rgba(0, 74, 173, 0.14));
+  animation: softPaletteMove 4.5s ease-in-out infinite;
+}
+
+@keyframes softBrushMove {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-18deg);
+  }
+
+  50% {
+    transform: translateY(-7px) rotate(-8deg);
+  }
+}
+
+@keyframes softPaletteMove {
+  0%,
+  100% {
+    transform: translateY(0) rotate(12deg);
+  }
+
+  50% {
+    transform: translateY(-7px) rotate(4deg);
+  }
+}
+
+/* Reduce heading top feel */
+.sketch-page .client-different-title {
+  margin-bottom: 38px;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+  .sketch-page .sketch-hero {
+    padding-bottom: 8px;
+  }
+
+  .sketch-page .realistic-video-easel {
+    min-height: 420px;
+  }
+
+  .sketch-page .different-section {
+    padding-top: 34px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 760px) {
+  .sketch-page .sketch-hero {
+    padding-bottom: 10px;
+  }
+
+  .sketch-page .realistic-video-easel {
+    min-height: 335px;
+  }
+
+  .sketch-page .different-section {
+    padding-top: 30px;
+  }
+
+  .sketch-page .different-section::after {
+    top: -70px;
+    height: 130px;
+  }
+
+  .sketch-page .client-different-title::before,
+  .sketch-page .client-different-title::after {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .sketch-page .realistic-video-easel {
+    min-height: 285px;
+  }
+
+  .sketch-page .different-section {
+    padding-top: 28px;
+  }
+}
