@@ -22,13 +22,26 @@ function AdminPage() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const [liveLink, setLiveLink] = useState("");
-  const [note, setNote] = useState("");
+  const [bookingLinks, setBookingLinks] = useState({});
+  const [bookingNotes, setBookingNotes] = useState({});
   const [sendingId, setSendingId] = useState(null);
 
   const [approvingId, setApprovingId] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
+
+  const prepareBookingLinkState = (bookingList) => {
+    const links = {};
+    const notes = {};
+
+    bookingList.forEach((booking) => {
+      links[booking.id] = booking.liveLink || "";
+      notes[booking.id] = booking.liveLinkNote || "";
+    });
+
+    setBookingLinks(links);
+    setBookingNotes(notes);
+  };
 
   const loadActivitySubmissions = async (token) => {
     const data = await getPendingActivitySubmissions(token);
@@ -42,18 +55,22 @@ function AdminPage() {
 
     try {
       const bookingData = await getAdminBookings(token);
+
       setBookings(bookingData);
+      prepareBookingLinkState(bookingData);
 
       await loadActivitySubmissions(token);
 
       setAuthToken(token);
       localStorage.setItem("adminToken", token);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Unable to load admin data");
       localStorage.removeItem("adminToken");
       setAuthToken("");
       setBookings([]);
       setActivitySubmissions([]);
+      setBookingLinks({});
+      setBookingNotes({});
     } finally {
       setLoading(false);
     }
@@ -69,25 +86,28 @@ function AdminPage() {
     event.preventDefault();
 
     const token = createBasicAuthToken(username, password);
-
     await loadBookings(token);
   };
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
+
     setAuthToken("");
     setBookings([]);
     setActivitySubmissions([]);
+    setBookingLinks({});
+    setBookingNotes({});
     setPassword("");
     setError("");
     setSuccessMessage("");
-    setLiveLink("");
-    setNote("");
   };
 
   const handleSendLink = async (booking) => {
+    const liveLink = bookingLinks[booking.id] || "";
+    const note = bookingNotes[booking.id] || "";
+
     if (!liveLink.trim()) {
-      setError("Please enter live class link");
+      setError("Please enter live class link for this booking.");
       return;
     }
 
@@ -96,13 +116,22 @@ function AdminPage() {
     setSuccessMessage("");
 
     try {
-      await sendLiveLink(authToken, booking.id, liveLink, note);
+      await sendLiveLink(
+        authToken,
+        booking.id,
+        liveLink.trim(),
+        note.trim()
+      );
 
       setSuccessMessage(
-        `Live link sent successfully to ${booking.parentName} at ${booking.email}`
+        booking.liveLinkSent
+          ? `Live link updated and sent to ${booking.parentName} at ${booking.email}`
+          : `Live link sent successfully to ${booking.parentName} at ${booking.email}`
       );
+
+      await loadBookings(authToken);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Unable to send live class link.");
     } finally {
       setSendingId(null);
     }
@@ -120,7 +149,7 @@ function AdminPage() {
 
       await loadActivitySubmissions(authToken);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Unable to approve artwork");
     } finally {
       setApprovingId(null);
     }
@@ -137,7 +166,7 @@ function AdminPage() {
       <main className="admin-page">
         <div className="admin-login-card">
           <h1>🎨 Ojas Admin Login</h1>
-          <p>Login to view demo bookings and student activity submissions.</p>
+          <p>Login to view demo bookings, artworks, and workshops.</p>
 
           <form onSubmit={handleLogin}>
             <input
@@ -203,9 +232,7 @@ function AdminPage() {
           </div>
 
           {activitySubmissions.length === 0 && (
-            <p className="empty-activity">
-              No pending activity submissions.
-            </p>
+            <p className="empty-activity">No pending activity submissions.</p>
           )}
 
           <div className="activity-review-grid">
@@ -234,32 +261,19 @@ function AdminPage() {
           </div>
         </div>
 
-        <div className="send-link-panel">
-          <h2>📨 Send Live Class Link</h2>
-
-          <input
-            type="url"
-            placeholder="Paste Google Meet / Zoom / YouTube live link"
-            value={liveLink}
-            onChange={(event) => setLiveLink(event.target.value)}
-          />
-
-          <textarea
-            rows="3"
-            placeholder="Optional note for parent"
-            value={note}
-            onChange={(event) => setNote(event.target.value)}
-          />
-
-          <p className="send-link-help">
-            Enter the live class link once, then click Send Link for the
-            respective booking.
-          </p>
-        </div>
         <AdminWorkshops authToken={authToken} />
 
+        <div className="send-link-panel">
+          <h2>📨 Demo Bookings & Live Class Links</h2>
+
+          <p className="send-link-help">
+            Add the Meet / Zoom / YouTube link for each booking. Once sent, the
+            same booking row will be updated. Duplicate bookings are not created.
+          </p>
+        </div>
+
         <div className="admin-table-wrapper">
-          <table>
+          <table className="admin-bookings-table">
             <thead>
               <tr>
                 <th>ID</th>
@@ -270,6 +284,9 @@ function AdminPage() {
                 <th>Email</th>
                 <th>Class</th>
                 <th>Message</th>
+                <th>Live Link</th>
+                <th>Note</th>
+                <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -277,7 +294,7 @@ function AdminPage() {
             <tbody>
               {bookings.length === 0 && !loading && (
                 <tr>
-                  <td colSpan="9" className="empty-bookings">
+                  <td colSpan="12" className="empty-bookings">
                     No demo bookings found.
                   </td>
                 </tr>
@@ -293,13 +310,60 @@ function AdminPage() {
                   <td>{booking.email}</td>
                   <td>{booking.preferredClass}</td>
                   <td>{booking.message || "-"}</td>
+
+                  <td>
+                    <input
+                      className="admin-row-link-input"
+                      type="url"
+                      placeholder="Paste Meet / Zoom link"
+                      value={bookingLinks[booking.id] || ""}
+                      onChange={(event) =>
+                        setBookingLinks((previous) => ({
+                          ...previous,
+                          [booking.id]: event.target.value
+                        }))
+                      }
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      className="admin-row-note-input"
+                      type="text"
+                      placeholder="Optional note"
+                      value={bookingNotes[booking.id] || ""}
+                      onChange={(event) =>
+                        setBookingNotes((previous) => ({
+                          ...previous,
+                          [booking.id]: event.target.value
+                        }))
+                      }
+                    />
+                  </td>
+
+                  <td>
+                    {booking.liveLinkSent ? (
+                      <span className="admin-link-status sent">
+                        Sent
+                      </span>
+                    ) : (
+                      <span className="admin-link-status not-sent">
+                        Not sent
+                      </span>
+                    )}
+                  </td>
+
                   <td>
                     <button
-                      className="send-link-btn"
+                      className="admin-send-row-btn"
                       onClick={() => handleSendLink(booking)}
                       disabled={sendingId === booking.id}
                     >
-                      {sendingId === booking.id ? "Sending..." : "Send Link"}
+                      {sendingId === booking.id
+                        ? "Sending..."
+                        : booking.liveLinkSent
+                        ? "Update Link"
+                        : "Send Link"}
                     </button>
                   </td>
                 </tr>

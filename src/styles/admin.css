@@ -258,3 +258,57 @@
   }
 
 }
+
+.admin-row-link-input,
+.admin-row-note-input {
+  width: 190px;
+  min-height: 36px;
+  border: 2px solid rgba(0, 74, 173, 0.18);
+  border-radius: 12px;
+  padding: 7px 10px;
+  color: #004aad;
+  font-family: inherit;
+  font-weight: 800;
+  outline: none;
+}
+
+.admin-row-link-input:focus,
+.admin-row-note-input:focus {
+  border-color: #004aad;
+}
+
+.admin-link-status {
+  display: inline-flex;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.admin-link-status.sent {
+  background: #e9fff2;
+  color: #087536;
+}
+
+.admin-link-status.not-sent {
+  background: #fff5d6;
+  color: #9a6500;
+}
+
+.admin-send-row-btn {
+  min-width: 110px;
+  min-height: 36px;
+  border: none;
+  border-radius: 999px;
+  background: #004aad;
+  color: #ffffff;
+  font-family: inherit;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.admin-send-row-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
