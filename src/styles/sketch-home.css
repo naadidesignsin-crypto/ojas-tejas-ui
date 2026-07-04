@@ -1889,3 +1889,264 @@
     width: 100%;
   }
 }
+
+/* ================================
+   DESKTOP / LAPTOP CONSISTENT LAYOUT
+   Makes UI stable across 1366px, 1440px, 1536px, 1920px screens
+   ================================ */
+
+.sketch-page {
+  width: 100%;
+}
+
+/* Keep header content aligned and not too stretched */
+.sketch-top-strip,
+.sketch-header,
+.sketch-hero,
+.different-section,
+.client-programs-section,
+.student-gallery-placeholder,
+.sketch-footer {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Header full color strip should still look full-width */
+.sketch-top-strip {
+  max-width: none;
+}
+
+/* Stable header */
+.sketch-header {
+  width: 100%;
+  padding-left: clamp(48px, 6vw, 86px);
+  padding-right: clamp(48px, 6vw, 86px);
+}
+
+.sketch-logo img {
+  width: clamp(130px, 11vw, 160px);
+}
+
+.sketch-nav {
+  gap: clamp(16px, 2vw, 34px);
+}
+
+.sketch-nav button {
+  font-size: clamp(0.88rem, 0.95vw, 1rem);
+  white-space: nowrap;
+}
+
+/* Stable hero for laptops and desktops */
+.sketch-hero {
+  width: 100%;
+  grid-template-columns: minmax(420px, 0.92fr) minmax(500px, 1.08fr);
+  gap: clamp(38px, 4vw, 62px);
+  min-height: auto;
+  padding-left: clamp(54px, 6vw, 88px);
+  padding-right: clamp(54px, 6vw, 88px);
+  padding-top: clamp(28px, 3vw, 42px);
+  padding-bottom: clamp(18px, 2.5vw, 34px);
+}
+
+/* Keep trial form size same */
+.trial-card {
+  max-width: 540px;
+}
+
+.trial-card h1 {
+  font-size: clamp(2.25rem, 3.2vw, 3.25rem);
+}
+
+.trial-card form {
+  max-width: 360px;
+}
+
+/* Keep palette consistent */
+.realistic-tools {
+  width: clamp(210px, 16vw, 250px);
+  margin-top: 10px;
+}
+
+/* Keep board consistent */
+.realistic-video-easel {
+  min-height: clamp(430px, 38vw, 520px);
+}
+
+.real-board-wrap {
+  width: clamp(460px, 42vw, 590px);
+  max-width: 100%;
+}
+
+/* Different section stable */
+.different-section {
+  padding-left: clamp(54px, 6vw, 88px);
+  padding-right: clamp(54px, 6vw, 88px);
+  padding-top: clamp(42px, 4vw, 64px);
+  padding-bottom: clamp(54px, 5vw, 78px);
+}
+
+.client-different-title h2 {
+  font-size: clamp(2.7rem, 4vw, 4.8rem);
+}
+
+.client-different-grid {
+  max-width: 1180px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(28px, 3.4vw, 52px);
+}
+
+.client-difference-card img {
+  height: clamp(170px, 14vw, 205px);
+}
+
+/* Programs section stable */
+.client-programs-section {
+  padding-left: clamp(54px, 6vw, 88px);
+  padding-right: clamp(54px, 6vw, 88px);
+  padding-top: clamp(56px, 5vw, 76px);
+  padding-bottom: clamp(70px, 6vw, 94px);
+}
+
+.client-programs-section h2 {
+  font-size: clamp(2.6rem, 4vw, 4.4rem);
+}
+
+.client-programs-grid {
+  max-width: 1120px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(54px, 5vw, 76px) clamp(48px, 5vw, 74px);
+}
+
+.client-program-card img {
+  height: clamp(190px, 16vw, 225px);
+}
+
+.client-program-card h3 {
+  font-size: clamp(1.55rem, 2vw, 2.05rem);
+}
+
+.client-program-card p {
+  max-width: 250px;
+}
+
+/* Gallery and footer stable */
+.student-gallery-placeholder {
+  padding-left: clamp(54px, 6vw, 88px);
+  padding-right: clamp(54px, 6vw, 88px);
+}
+
+.sketch-footer {
+  max-width: none;
+  padding-left: clamp(54px, 6vw, 88px);
+  padding-right: clamp(54px, 6vw, 88px);
+}
+
+/* Large monitor: prevent too much stretching */
+@media (min-width: 1441px) {
+  .sketch-hero,
+  .different-section,
+  .client-programs-section,
+  .student-gallery-placeholder {
+    max-width: 1440px;
+  }
+
+  .real-board-wrap {
+    width: 590px;
+  }
+
+  .realistic-video-easel {
+    min-height: 520px;
+  }
+}
+
+/* Common laptop: 1366 to 1440 */
+@media (min-width: 1200px) and (max-width: 1440px) {
+  .sketch-hero {
+    grid-template-columns: 0.92fr 1.08fr;
+    gap: 42px;
+  }
+
+  .trial-card h1 {
+    font-size: 2.75rem;
+  }
+
+  .real-board-wrap {
+    width: 530px;
+  }
+
+  .realistic-video-easel {
+    min-height: 470px;
+  }
+
+  .client-different-grid {
+    gap: 36px;
+  }
+
+  .client-programs-grid {
+    gap: 62px 58px;
+  }
+}
+
+/* Small laptop: 1024 to 1199 */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .sketch-header {
+    padding-left: 42px;
+    padding-right: 42px;
+  }
+
+  .sketch-nav {
+    gap: 14px;
+  }
+
+  .sketch-nav button {
+    font-size: 0.82rem;
+  }
+
+  .sketch-hero {
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 32px;
+    padding-left: 42px;
+    padding-right: 42px;
+  }
+
+  .trial-card h1 {
+    font-size: 2.35rem;
+  }
+
+  .trial-card form {
+    max-width: 335px;
+  }
+
+  .real-board-wrap {
+    width: 460px;
+  }
+
+  .realistic-video-easel {
+    min-height: 420px;
+  }
+
+  .client-different-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .client-difference-card img {
+    height: 165px;
+  }
+
+  .client-programs-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 54px 34px;
+  }
+
+  .client-program-card img {
+    height: 180px;
+  }
+
+  .client-program-card button {
+    width: 190px;
+    height: 64px;
+    font-size: 0.88rem;
+  }
+}
