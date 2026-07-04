@@ -100,6 +100,8 @@ function AdminPage() {
     setPassword("");
     setError("");
     setSuccessMessage("");
+
+    window.location.href = "/";
   };
 
   const handleSendLink = async (booking) => {
