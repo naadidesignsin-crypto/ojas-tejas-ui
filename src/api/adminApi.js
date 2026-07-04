@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export function createBasicAuthToken(username, password) {
   return "Basic " + btoa(`${username}:${password}`);
