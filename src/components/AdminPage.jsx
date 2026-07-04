@@ -20,6 +20,8 @@ function AdminPage() {
     localStorage.getItem("adminToken") || ""
   );
 
+  const [activeTab, setActiveTab] = useState("overview");
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -163,12 +165,14 @@ function AdminPage() {
     }
   };
 
+  const totalSentLinks = bookings.filter((booking) => booking.liveLinkSent).length;
+
   if (!authToken) {
     return (
       <main className="admin-page">
         <div className="admin-login-card">
           <h1>🎨 Ojas Admin Login</h1>
-          <p>Login to view demo bookings, artworks, and workshops.</p>
+          <p>Login to manage demo links, artworks, and workshops.</p>
 
           <form onSubmit={handleLogin}>
             <input
@@ -198,14 +202,12 @@ function AdminPage() {
 
   return (
     <main className="admin-page">
-      <div className="admin-dashboard">
+      <div className="admin-dashboard clean-admin-dashboard">
         <div className="admin-header">
           <div>
-            <h1>📋 Ojas Admin Dashboard</h1>
-            <p>
-              Demo bookings: {bookings.length} | Pending artworks:{" "}
-              {activitySubmissions.length}
-            </p>
+            <span className="admin-eyebrow">Admin Portal</span>
+            <h1>📋 Ojas Dashboard</h1>
+            <p>Manage bookings, live links, artworks, and workshops clearly.</p>
           </div>
 
           <div className="admin-header-actions">
@@ -217,162 +219,287 @@ function AdminPage() {
           </div>
         </div>
 
-        {loading && <p>Loading admin data...</p>}
+        {loading && <p className="admin-loading-text">Loading admin data...</p>}
 
         {error && <p className="admin-error">{error}</p>}
 
         {successMessage && <p className="admin-success">{successMessage}</p>}
 
-        <div className="admin-activity-section">
-          <div className="admin-section-title">
-            <div>
-              <h2>🎨 Student Activity Submissions</h2>
-              <p>Review student drawings and post selected ones to gallery.</p>
+        <div className="admin-summary-grid">
+          <button
+            className={activeTab === "demo" ? "admin-summary-card active" : "admin-summary-card"}
+            onClick={() => setActiveTab("demo")}
+          >
+            <span>📨</span>
+            <strong>{bookings.length}</strong>
+            <small>Demo bookings</small>
+          </button>
+
+          <button
+            className={activeTab === "links" ? "admin-summary-card active" : "admin-summary-card"}
+            onClick={() => setActiveTab("links")}
+          >
+            <span>🔗</span>
+            <strong>{totalSentLinks}</strong>
+            <small>Links sent</small>
+          </button>
+
+          <button
+            className={activeTab === "artworks" ? "admin-summary-card active" : "admin-summary-card"}
+            onClick={() => setActiveTab("artworks")}
+          >
+            <span>🎨</span>
+            <strong>{activitySubmissions.length}</strong>
+            <small>Pending artworks</small>
+          </button>
+
+          <button
+            className={activeTab === "workshops" ? "admin-summary-card active" : "admin-summary-card"}
+            onClick={() => setActiveTab("workshops")}
+          >
+            <span>🧑‍🏫</span>
+            <strong>+</strong>
+            <small>Workshops</small>
+          </button>
+        </div>
+
+        <div className="admin-tab-bar">
+          <button
+            className={activeTab === "overview" ? "active" : ""}
+            onClick={() => setActiveTab("overview")}
+          >
+            Overview
+          </button>
+
+          <button
+            className={activeTab === "demo" || activeTab === "links" ? "active" : ""}
+            onClick={() => setActiveTab("demo")}
+          >
+            Demo Live Links
+          </button>
+
+          <button
+            className={activeTab === "artworks" ? "active" : ""}
+            onClick={() => setActiveTab("artworks")}
+          >
+            Student Artworks
+          </button>
+
+          <button
+            className={activeTab === "workshops" ? "active" : ""}
+            onClick={() => setActiveTab("workshops")}
+          >
+            Workshops
+          </button>
+        </div>
+
+        {activeTab === "overview" && (
+          <section className="admin-clean-panel">
+            <div className="admin-panel-title">
+              <div>
+                <h2>Dashboard Overview</h2>
+                <p>Select a section above to manage only that area.</p>
+              </div>
             </div>
 
-            <span>{activitySubmissions.length} pending</span>
-          </div>
+            <div className="admin-overview-grid">
+              <article>
+                <h3>📨 Demo Live Links</h3>
+                <p>
+                  Add or update individual live class links for each student
+                  booking.
+                </p>
+                <button onClick={() => setActiveTab("demo")}>
+                  Open Demo Links
+                </button>
+              </article>
 
-          {activitySubmissions.length === 0 && (
-            <p className="empty-activity">No pending activity submissions.</p>
-          )}
+              <article>
+                <h3>🎨 Student Artworks</h3>
+                <p>
+                  Review student submitted artworks and approve selected ones
+                  for gallery.
+                </p>
+                <button onClick={() => setActiveTab("artworks")}>
+                  Review Artworks
+                </button>
+              </article>
 
-          <div className="activity-review-grid">
-            {activitySubmissions.map((submission) => (
-              <div className="activity-review-card" key={submission.id}>
-                <img
-                  src={submission.imageData}
-                  alt={submission.activityTitle}
-                />
+              <article>
+                <h3>🧑‍🏫 Workshops</h3>
+                <p>
+                  Create workshops, add dates, publish, and update workshop
+                  details.
+                </p>
+                <button onClick={() => setActiveTab("workshops")}>
+                  Manage Workshops
+                </button>
+              </article>
+            </div>
+          </section>
+        )}
 
-                <div className="activity-review-content">
-                  <h3>{submission.activityTitle}</h3>
-                  <p>Student: {submission.studentName}</p>
-
-                  <button
-                    onClick={() => handleApproveActivity(submission.id)}
-                    disabled={approvingId === submission.id}
-                  >
-                    {approvingId === submission.id
-                      ? "Posting..."
-                      : "Approve & Post to Gallery"}
-                  </button>
-                </div>
+        {(activeTab === "demo" || activeTab === "links") && (
+          <section className="admin-clean-panel">
+            <div className="admin-panel-title">
+              <div>
+                <h2>📨 Demo Bookings & Live Class Links</h2>
+                <p>
+                  Add the Meet / Zoom / YouTube link for each booking. Once
+                  sent, the same booking row will be updated.
+                </p>
               </div>
-            ))}
-          </div>
-        </div>
 
-        <AdminWorkshops authToken={authToken} />
+              <span>{bookings.length} bookings</span>
+            </div>
 
-        <div className="send-link-panel">
-          <h2>📨 Demo Bookings & Live Class Links</h2>
+            <div className="admin-table-wrapper">
+              <table className="admin-bookings-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Parent</th>
+                    <th>Child</th>
+                    <th>Age</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Class</th>
+                    <th>Message</th>
+                    <th>Live Link</th>
+                    <th>Note</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
 
-          <p className="send-link-help">
-            Add the Meet / Zoom / YouTube link for each booking. Once sent, the
-            same booking row will be updated. Duplicate bookings are not created.
-          </p>
-        </div>
+                <tbody>
+                  {bookings.length === 0 && !loading && (
+                    <tr>
+                      <td colSpan="12" className="empty-bookings">
+                        No demo bookings found.
+                      </td>
+                    </tr>
+                  )}
 
-        <div className="admin-table-wrapper">
-          <table className="admin-bookings-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Parent</th>
-                <th>Child</th>
-                <th>Age</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Class</th>
-                <th>Message</th>
-                <th>Live Link</th>
-                <th>Note</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
+                  {bookings.map((booking) => (
+                    <tr key={booking.id}>
+                      <td>{booking.id}</td>
+                      <td>{booking.parentName}</td>
+                      <td>{booking.childName}</td>
+                      <td>{booking.childAge}</td>
+                      <td>{booking.phone}</td>
+                      <td>{booking.email}</td>
+                      <td>{booking.preferredClass}</td>
+                      <td>{booking.message || "-"}</td>
 
-            <tbody>
-              {bookings.length === 0 && !loading && (
-                <tr>
-                  <td colSpan="12" className="empty-bookings">
-                    No demo bookings found.
-                  </td>
-                </tr>
-              )}
+                      <td>
+                        <input
+                          className="admin-row-link-input"
+                          type="url"
+                          placeholder="Paste Meet / Zoom link"
+                          value={bookingLinks[booking.id] || ""}
+                          onChange={(event) =>
+                            setBookingLinks((previous) => ({
+                              ...previous,
+                              [booking.id]: event.target.value
+                            }))
+                          }
+                        />
+                      </td>
 
-              {bookings.map((booking) => (
-                <tr key={booking.id}>
-                  <td>{booking.id}</td>
-                  <td>{booking.parentName}</td>
-                  <td>{booking.childName}</td>
-                  <td>{booking.childAge}</td>
-                  <td>{booking.phone}</td>
-                  <td>{booking.email}</td>
-                  <td>{booking.preferredClass}</td>
-                  <td>{booking.message || "-"}</td>
+                      <td>
+                        <input
+                          className="admin-row-note-input"
+                          type="text"
+                          placeholder="Optional note"
+                          value={bookingNotes[booking.id] || ""}
+                          onChange={(event) =>
+                            setBookingNotes((previous) => ({
+                              ...previous,
+                              [booking.id]: event.target.value
+                            }))
+                          }
+                        />
+                      </td>
 
-                  <td>
-                    <input
-                      className="admin-row-link-input"
-                      type="url"
-                      placeholder="Paste Meet / Zoom link"
-                      value={bookingLinks[booking.id] || ""}
-                      onChange={(event) =>
-                        setBookingLinks((previous) => ({
-                          ...previous,
-                          [booking.id]: event.target.value
-                        }))
-                      }
-                    />
-                  </td>
+                      <td>
+                        {booking.liveLinkSent ? (
+                          <span className="admin-link-status sent">Sent</span>
+                        ) : (
+                          <span className="admin-link-status not-sent">
+                            Not sent
+                          </span>
+                        )}
+                      </td>
 
-                  <td>
-                    <input
-                      className="admin-row-note-input"
-                      type="text"
-                      placeholder="Optional note"
-                      value={bookingNotes[booking.id] || ""}
-                      onChange={(event) =>
-                        setBookingNotes((previous) => ({
-                          ...previous,
-                          [booking.id]: event.target.value
-                        }))
-                      }
-                    />
-                  </td>
+                      <td>
+                        <button
+                          className="admin-send-row-btn"
+                          onClick={() => handleSendLink(booking)}
+                          disabled={sendingId === booking.id}
+                        >
+                          {sendingId === booking.id
+                            ? "Sending..."
+                            : booking.liveLinkSent
+                            ? "Update Link"
+                            : "Send Link"}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
 
-                  <td>
-                    {booking.liveLinkSent ? (
-                      <span className="admin-link-status sent">
-                        Sent
-                      </span>
-                    ) : (
-                      <span className="admin-link-status not-sent">
-                        Not sent
-                      </span>
-                    )}
-                  </td>
+        {activeTab === "artworks" && (
+          <section className="admin-clean-panel">
+            <div className="admin-panel-title">
+              <div>
+                <h2>🎨 Student Activity Submissions</h2>
+                <p>Review student drawings and post selected ones to gallery.</p>
+              </div>
 
-                  <td>
+              <span>{activitySubmissions.length} pending</span>
+            </div>
+
+            {activitySubmissions.length === 0 && (
+              <p className="empty-activity">No pending activity submissions.</p>
+            )}
+
+            <div className="activity-review-grid">
+              {activitySubmissions.map((submission) => (
+                <div className="activity-review-card" key={submission.id}>
+                  <img
+                    src={submission.imageData}
+                    alt={submission.activityTitle}
+                  />
+
+                  <div className="activity-review-content">
+                    <h3>{submission.activityTitle}</h3>
+                    <p>Student: {submission.studentName}</p>
+
                     <button
-                      className="admin-send-row-btn"
-                      onClick={() => handleSendLink(booking)}
-                      disabled={sendingId === booking.id}
+                      onClick={() => handleApproveActivity(submission.id)}
+                      disabled={approvingId === submission.id}
                     >
-                      {sendingId === booking.id
-                        ? "Sending..."
-                        : booking.liveLinkSent
-                        ? "Update Link"
-                        : "Send Link"}
+                      {approvingId === submission.id
+                        ? "Posting..."
+                        : "Approve & Post to Gallery"}
                     </button>
-                  </td>
-                </tr>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </div>
+          </section>
+        )}
+
+        {activeTab === "workshops" && (
+          <section className="admin-clean-panel no-panel-bg">
+            <AdminWorkshops authToken={authToken} />
+          </section>
+        )}
       </div>
     </main>
   );
