@@ -231,9 +231,7 @@ function SketchHomePage() {
 
                 {!videoStarted && (
                   <div className="video-overlay-real">
-                    <div className="video-ribbon-real">
-                      🎥 Ojas Art Class Preview
-                    </div>
+
 
                     <button
                       type="button"

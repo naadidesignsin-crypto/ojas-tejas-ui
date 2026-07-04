@@ -1,0 +1,429 @@
+.activity-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 31, 82, 0.45);
+  backdrop-filter: blur(10px);
+}
+
+.activity-modal {
+  width: min(1220px, 96vw);
+  max-height: 94vh;
+  overflow-y: auto;
+  padding: 28px;
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.42), transparent 24%),
+    radial-gradient(circle at 90% 0%, rgba(255, 244, 174, 0.35), transparent 26%),
+    #b4dbff;
+  color: #004aad;
+  box-shadow: 0 28px 90px rgba(0, 31, 82, 0.32);
+  font-family: "Comic Sans MS", "Trebuchet MS", system-ui, sans-serif;
+}
+
+.activity-modal-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 22px;
+}
+
+.activity-eyebrow {
+  display: inline-flex;
+  margin-bottom: 10px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  color: #004aad;
+  font-weight: 950;
+}
+
+.activity-modal-header h2 {
+  margin: 0;
+  max-width: 800px;
+  font-size: clamp(1.9rem, 3.4vw, 3.4rem);
+  line-height: 1.05;
+  font-weight: 950;
+  text-shadow:
+    2px 2px 0 rgba(255, 255, 255, 0.32),
+    0 8px 18px rgba(0, 74, 173, 0.12);
+}
+
+.activity-modal-header p {
+  margin: 10px 0 0;
+  max-width: 720px;
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.activity-close-btn {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  border: none;
+  border-radius: 50%;
+  background: #ff6259;
+  color: #ffffff;
+  font-size: 1.3rem;
+  font-weight: 950;
+  cursor: pointer;
+  box-shadow: 6px 7px 0 rgba(0, 74, 173, 0.14);
+}
+
+.activity-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.activity-side-panel {
+  padding: 20px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.22),
+    0 18px 45px rgba(0, 74, 173, 0.1);
+}
+
+.activity-side-panel input[type="text"] {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid rgba(0, 74, 173, 0.48);
+  background: transparent;
+  padding: 10px 4px;
+  margin-bottom: 15px;
+  color: #004aad;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 900;
+  outline: none;
+}
+
+.activity-side-panel input::placeholder {
+  color: #004aad;
+  opacity: 0.75;
+}
+
+.upload-art-btn {
+  width: 100%;
+  min-height: 58px;
+  margin: 8px 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background:
+    url("../assets/btn-scribble-transparent.png")
+    center / 100% 100%
+    no-repeat;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 950;
+  cursor: pointer;
+  filter: drop-shadow(7px 7px 0 rgba(0, 74, 173, 0.12));
+}
+
+.upload-art-btn input {
+  display: none;
+}
+
+.tool-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.tool-group button,
+.background-row button,
+.board-actions-mini button,
+.sticker-row button {
+  border: 2px solid rgba(0, 74, 173, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.46);
+  color: #004aad;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 950;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.tool-group button:hover,
+.background-row button:hover,
+.board-actions-mini button:hover,
+.sticker-row button:hover,
+.tool-group .tool-active,
+.sticker-row .sticker-active {
+  background: #004aad;
+  color: #ffffff;
+}
+
+.color-size-row {
+  display: grid;
+  grid-template-columns: 0.75fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.color-size-row label {
+  display: grid;
+  gap: 8px;
+  color: #004aad;
+  font-size: 0.82rem;
+  font-weight: 950;
+}
+
+.color-size-row input[type="color"] {
+  width: 100%;
+  height: 42px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.color-size-row select {
+  width: 100%;
+  height: 42px;
+  border: 2px solid rgba(0, 74, 173, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.46);
+  color: #004aad;
+  font-family: inherit;
+  font-weight: 950;
+  padding: 0 10px;
+  outline: none;
+}
+
+.sticker-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sticker-row button {
+  min-height: 44px;
+  padding: 6px;
+  font-size: 1.25rem;
+}
+
+.background-row,
+.board-actions-mini {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.background-row {
+  margin-bottom: 10px;
+}
+
+.activity-canvas-stage {
+  position: relative;
+  min-height: 620px;
+  padding: 22px;
+  border-radius: 32px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.16)),
+    rgba(255, 255, 255, 0.26);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.25),
+    0 22px 54px rgba(0, 74, 173, 0.13);
+}
+
+.activity-board-top {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.activity-board-top span {
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: #004aad;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 950;
+  box-shadow: 0 12px 24px rgba(0, 74, 173, 0.18);
+}
+
+.activity-canvas-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 10px solid rgba(255, 255, 255, 0.52);
+  box-shadow:
+    0 22px 54px rgba(0, 74, 173, 0.16),
+    inset 0 0 0 3px rgba(0, 74, 173, 0.08);
+}
+
+.activity-canvas-wrap canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: crosshair;
+  touch-action: none;
+  background: #ffffff;
+}
+
+.drag-active {
+  outline: 5px dashed rgba(255, 98, 89, 0.8);
+  outline-offset: -12px;
+}
+
+.drop-overlay {
+  position: absolute;
+  inset: 22px;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  border-radius: 28px;
+  background: rgba(0, 74, 173, 0.28);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+
+.drop-overlay div {
+  display: grid;
+  gap: 8px;
+  padding: 30px 42px;
+  border-radius: 28px;
+  background: #ffffff;
+  color: #004aad;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 31, 82, 0.22);
+}
+
+.drop-overlay strong {
+  font-size: 1.6rem;
+  font-weight: 950;
+}
+
+.drop-overlay span {
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.activity-success,
+.activity-error {
+  margin: 18px 0 0;
+  padding: 13px 16px;
+  border-radius: 16px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.activity-success {
+  background: #e9fff2;
+  color: #087536;
+}
+
+.activity-error {
+  background: #fff0f0;
+  color: #b42318;
+}
+
+.activity-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.activity-cancel-btn,
+.activity-submit-btn {
+  min-width: 170px;
+  height: 62px;
+  border: none;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.activity-cancel-btn {
+  border-radius: 18px;
+  background: #617ba7;
+  box-shadow: 6px 7px 0 rgba(0, 74, 173, 0.12);
+}
+
+.activity-submit-btn {
+  background:
+    url("../assets/btn-scribble-transparent.png")
+    center / 100% 100%
+    no-repeat;
+  filter: drop-shadow(7px 7px 0 rgba(0, 74, 173, 0.14));
+}
+
+.activity-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 980px) {
+  .activity-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-side-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .upload-art-btn,
+  .tool-group,
+  .color-size-row,
+  .sticker-row,
+  .background-row,
+  .board-actions-mini {
+    margin: 0;
+  }
+
+  .activity-canvas-stage {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 760px) {
+  .activity-modal-backdrop {
+    padding: 12px;
+  }
+
+  .activity-modal {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .activity-modal-header {
+    flex-direction: column;
+  }
+
+  .activity-side-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-actions {
+    flex-direction: column;
+  }
+
+  .activity-cancel-btn,
+  .activity-submit-btn {
+    width: 100%;
+  }
+
+  .activity-board-top span {
+    font-size: 0.78rem;
+  }
+}
