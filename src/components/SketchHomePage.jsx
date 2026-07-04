@@ -13,6 +13,7 @@ import ojasKaladaan from "../assets/programs/ojas-kaladaan.png";
 import artGallery from "../assets/programs/art-gallery.png";
 import creativeCourses from "../assets/programs/creative-courses.png";
 import { createDemoBooking } from "../api/demoBookingApi";
+import { createBasicAuthToken, getAdminBookings } from "../api/adminApi";
 import ActivityDrawingModal from "./ActivityDrawingModal.jsx";
 import WorkshopDatesModal from "./WorkshopDatesModal.jsx";
 import "../styles/sketch-home.css";
@@ -34,9 +35,16 @@ function SketchHomePage() {
   const [loading, setLoading] = useState(false);
   const [formMessage, setFormMessage] = useState("");
   const [formError, setFormError] = useState("");
+
   const [showActivityModal, setShowActivityModal] = useState(false);
-  const [videoStarted, setVideoStarted] = useState(false);
   const [showWorkshopModal, setShowWorkshopModal] = useState(false);
+  const [videoStarted, setVideoStarted] = useState(false);
+
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [adminUsername, setAdminUsername] = useState("admin");
+  const [adminPassword, setAdminPassword] = useState("");
+  const [adminLoginError, setAdminLoginError] = useState("");
+  const [adminLoginLoading, setAdminLoginLoading] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -90,6 +98,54 @@ function SketchHomePage() {
     }
   };
 
+  const openLogin = () => {
+    const savedToken = localStorage.getItem("adminToken");
+
+    if (savedToken) {
+      window.location.href = "/admin";
+      return;
+    }
+
+    setShowLoginModal(true);
+    setAdminLoginError("");
+  };
+
+  const closeLogin = () => {
+    setShowLoginModal(false);
+    setAdminPassword("");
+    setAdminLoginError("");
+    setAdminLoginLoading(false);
+  };
+
+  const handleAdminLogin = async (event) => {
+    event.preventDefault();
+
+    if (!adminUsername.trim() || !adminPassword.trim()) {
+      setAdminLoginError("Please enter admin username and password.");
+      return;
+    }
+
+    setAdminLoginLoading(true);
+    setAdminLoginError("");
+
+    try {
+      const token = createBasicAuthToken(
+        adminUsername.trim(),
+        adminPassword.trim()
+      );
+
+      await getAdminBookings(token);
+
+      localStorage.setItem("adminToken", token);
+      window.location.href = "/admin";
+    } catch (error) {
+      localStorage.removeItem("adminToken");
+      setAdminLoginError("Invalid admin credentials. You are still on Home Page.");
+    } finally {
+      setAdminLoginLoading(false);
+    }
+  };
+
   return (
     <div className="sketch-page">
       <div className="sketch-top-strip">
@@ -109,13 +165,24 @@ function SketchHomePage() {
 
         <nav className="sketch-nav">
           <button onClick={() => scrollTo("home")}>Home</button>
+
           <button onClick={() => scrollTo("classes")}>
             Live online classes
           </button>
+
           <button onClick={() => scrollTo("trial")}>Free Demo</button>
-          <button onClick={() => scrollTo("student-gallery")}>Gallery</button>
+
+          <button onClick={() => scrollTo("student-gallery")}>
+            Gallery
+          </button>
+
           <button onClick={() => scrollTo("different")}>About</button>
+
           <button onClick={() => scrollTo("contact")}>Contact</button>
+
+          <button className="admin-nav-btn" onClick={openLogin}>
+            Login
+          </button>
         </nav>
       </header>
 
@@ -192,10 +259,13 @@ function SketchHomePage() {
                 onChange={handleChange}
               >
                 <option value="Free Trial Session">Free Trial Session</option>
+
                 <option value="Live Online Art Classes">
                   Live Online Art Classes
                 </option>
+
                 <option value="Summer Art Camp">Summer Art Camp</option>
+
                 <option value="Art Workshops">Art Workshops</option>
               </select>
 
@@ -233,8 +303,6 @@ function SketchHomePage() {
 
                 {!videoStarted && (
                   <div className="video-overlay-real">
-
-
                     <button
                       type="button"
                       className="intro-play-button-real"
@@ -278,7 +346,10 @@ function SketchHomePage() {
           </div>
         </section>
 
-        <section className="programs-section client-programs-section" id="programs">
+        <section
+          className="programs-section client-programs-section"
+          id="programs"
+        >
           <h2>Our programs</h2>
 
           <div className="client-programs-grid">
@@ -286,6 +357,7 @@ function SketchHomePage() {
               <img src={liveOnlineArtClasses} alt="Live online art classes" />
               <h3>Live online art classes</h3>
               <p>Fun, weekly, hour-long creative classes.</p>
+
               <button onClick={() => scrollTo("trial")}>
                 Explore Classes
               </button>
@@ -295,6 +367,7 @@ function SketchHomePage() {
               <img src={summerArtCamp} alt="Summer art camp" />
               <h3>Summer art camp</h3>
               <p>Inspiring, creative classes during break.</p>
+
               <button onClick={() => scrollTo("trial")}>
                 View Summer Camp
               </button>
@@ -304,6 +377,7 @@ function SketchHomePage() {
               <img src={artWorkshops} alt="Art workshops" />
               <h3>Art workshops</h3>
               <p>Exciting themed workshops for kids.</p>
+
               <button onClick={() => setShowWorkshopModal(true)}>
                 See Workshop
               </button>
@@ -313,6 +387,7 @@ function SketchHomePage() {
               <img src={ojasKaladaan} alt="Ojas Kaladaan" />
               <h3>Ojas Kaladaan</h3>
               <p>Creative giving through art activities.</p>
+
               <button onClick={() => setShowActivityModal(true)}>
                 Open Activity
               </button>
@@ -322,6 +397,7 @@ function SketchHomePage() {
               <img src={artGallery} alt="Art gallery" />
               <h3>Art gallery</h3>
               <p>Student artworks approved by admin.</p>
+
               <button onClick={() => scrollTo("student-gallery")}>
                 View Gallery
               </button>
@@ -331,6 +407,7 @@ function SketchHomePage() {
               <img src={creativeCourses} alt="Creative courses" />
               <h3>Creative courses</h3>
               <p>Drawing, coloring, craft, and imagination.</p>
+
               <button onClick={() => scrollTo("trial")}>
                 Start Learning
               </button>
@@ -340,6 +417,7 @@ function SketchHomePage() {
 
         <section className="student-gallery-placeholder" id="student-gallery">
           <h2>Student Art Gallery</h2>
+
           <p>
             Drawings submitted through activities will appear here after admin
             approval.
@@ -369,15 +447,58 @@ function SketchHomePage() {
         <ActivityDrawingModal onClose={() => setShowActivityModal(false)} />
       )}
 
-       {showWorkshopModal && (
-         <WorkshopDatesModal
-           onClose={() => setShowWorkshopModal(false)}
-           onBookDemo={() => {
-             setShowWorkshopModal(false);
-             scrollTo("trial");
-           }}
-         />
-       )}
+      {showWorkshopModal && (
+        <WorkshopDatesModal
+          onClose={() => setShowWorkshopModal(false)}
+          onBookDemo={() => {
+            setShowWorkshopModal(false);
+            scrollTo("trial");
+          }}
+        />
+      )}
+
+      {showLoginModal && (
+        <div className="landing-login-backdrop">
+          <div className="landing-login-card">
+            <button className="landing-login-close" onClick={closeLogin}>
+              ✕
+            </button>
+
+            <span className="landing-login-badge">🔐 Admin Access</span>
+
+            <h2>Login</h2>
+
+            <p>
+              Enter admin credentials to open the Admin Portal. Invalid users
+              will remain on the Home Page.
+            </p>
+
+            <form onSubmit={handleAdminLogin}>
+              <input
+                type="text"
+                placeholder="Admin username"
+                value={adminUsername}
+                onChange={(event) => setAdminUsername(event.target.value)}
+              />
+
+              <input
+                type="password"
+                placeholder="Admin password"
+                value={adminPassword}
+                onChange={(event) => setAdminPassword(event.target.value)}
+              />
+
+              <button type="submit" disabled={adminLoginLoading}>
+                {adminLoginLoading ? "Checking..." : "Login"}
+              </button>
+            </form>
+
+            {adminLoginError && (
+              <p className="landing-login-error">{adminLoginError}</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
