@@ -2,6 +2,16 @@ import React, { useRef, useState } from "react";
 import logo from "../assets/ojas-logo-header.png";
 import boardImage from "../assets/board-transparent.png";
 import colorImage from "../assets/color-transparent.png";
+import storyLedTeaching from "../assets/different/story-led-teaching.png";
+import smallGroups from "../assets/different/small-groups.png";
+import conceptCreateColor from "../assets/different/concept-create-color.png";
+import artTrainedEducator from "../assets/different/art-trained-educator.png";
+import liveOnlineArtClasses from "../assets/programs/live-online-art-classes.png";
+import summerArtCamp from "../assets/programs/summer-art-camp.png";
+import artWorkshops from "../assets/programs/art-workshops.png";
+import ojasKaladaan from "../assets/programs/ojas-kaladaan.png";
+import artGallery from "../assets/programs/art-gallery.png";
+import creativeCourses from "../assets/programs/creative-courses.png";
 import { createDemoBooking } from "../api/demoBookingApi";
 import ActivityDrawingModal from "./ActivityDrawingModal.jsx";
 import "../styles/sketch-home.css";
@@ -241,59 +251,39 @@ function SketchHomePage() {
         </section>
 
         <section className="different-section" id="different">
-          <div className="section-title-wrap">
-            <span>✨ Why kids love us</span>
-            <h2>What makes Ojas by Tejas different?</h2>
-            <p>
-              We make every class playful, personal, and full of imagination.
-            </p>
+          <div className="section-title-wrap client-different-title">
+            <h2>What makes Ojasbytejas different from?</h2>
           </div>
 
-          <div className="different-grid">
-            <article className="difference-card">
-              <div className="difference-number">01</div>
-              <div className="sketch-illustration">📚 👧 🎨</div>
+          <div className="client-different-grid">
+            <article className="client-difference-card">
+              <img src={storyLedTeaching} alt="Story-led teaching" />
               <h3>Story-led teaching</h3>
-              <p>
-                Every drawing starts with a fun story so kids feel connected.
-              </p>
             </article>
 
-            <article className="difference-card">
-              <div className="difference-number">02</div>
-              <div className="sketch-illustration">👩‍🎨 🧒</div>
-              <h3>Small groups</h3>
-              <p>
-                Personal attention helps every child learn with confidence.
-              </p>
+            <article className="client-difference-card">
+              <img src={smallGroups} alt="Small groups" />
+              <h3>small groups</h3>
             </article>
 
-            <article className="difference-card">
-              <div className="difference-number">03</div>
-              <div className="sketch-illustration">💡 🌈</div>
-              <h3>Concept + creativity</h3>
-              <p>
-                Children learn basic concepts and then explore their own ideas.
-              </p>
+            <article className="client-difference-card">
+              <img src={conceptCreateColor} alt="Concept create color" />
+              <h3>Concept. create. Color</h3>
             </article>
 
-            <article className="difference-card">
-              <div className="difference-number">04</div>
-              <div className="sketch-illustration">🎓 🖌️</div>
-              <h3>Art-trained educators</h3>
-              <p>
-                Friendly teachers guide kids with patience and encouragement.
-              </p>
+            <article className="client-difference-card">
+              <img src={artTrainedEducator} alt="Art trained educator" />
+              <h3>Art trained educator</h3>
             </article>
           </div>
         </section>
 
-        <section className="programs-section" id="programs">
+        <section className="programs-section client-programs-section" id="programs">
           <h2>Our programs</h2>
 
-          <div className="programs-grid">
-            <article className="program-card" id="classes">
-              <div className="program-art">💻 🎨 🐘</div>
+          <div className="client-programs-grid">
+            <article className="client-program-card" id="classes">
+              <img src={liveOnlineArtClasses} alt="Live online art classes" />
               <h3>Live online art classes</h3>
               <p>Fun, weekly, hour-long creative classes.</p>
               <button onClick={() => scrollTo("trial")}>
@@ -301,8 +291,8 @@ function SketchHomePage() {
               </button>
             </article>
 
-            <article className="program-card">
-              <div className="program-art">👧 🌈 🖌️</div>
+            <article className="client-program-card">
+              <img src={summerArtCamp} alt="Summer art camp" />
               <h3>Summer art camp</h3>
               <p>Inspiring, creative classes during break.</p>
               <button onClick={() => scrollTo("trial")}>
@@ -310,15 +300,17 @@ function SketchHomePage() {
               </button>
             </article>
 
-            <article className="program-card">
-              <div className="program-art">🧒 🎨 🖼️</div>
+            <article className="client-program-card">
+              <img src={artWorkshops} alt="Art workshops" />
               <h3>Art workshops</h3>
               <p>Exciting themed workshops for kids.</p>
-              <button onClick={() => scrollTo("trial")}>See Workshop</button>
+              <button onClick={() => scrollTo("trial")}>
+                See Workshop
+              </button>
             </article>
 
-            <article className="program-card">
-              <div className="program-art">🤝 🎨</div>
+            <article className="client-program-card">
+              <img src={ojasKaladaan} alt="Ojas Kaladaan" />
               <h3>Ojas Kaladaan</h3>
               <p>Creative giving through art activities.</p>
               <button onClick={() => setShowActivityModal(true)}>
@@ -326,8 +318,8 @@ function SketchHomePage() {
               </button>
             </article>
 
-            <article className="program-card">
-              <div className="program-art">🖼️ ⭐</div>
+            <article className="client-program-card">
+              <img src={artGallery} alt="Art gallery" />
               <h3>Art gallery</h3>
               <p>Student artworks approved by admin.</p>
               <button onClick={() => scrollTo("student-gallery")}>
@@ -335,8 +327,8 @@ function SketchHomePage() {
               </button>
             </article>
 
-            <article className="program-card">
-              <div className="program-art">✂️ 🖍️ 📚</div>
+            <article className="client-program-card">
+              <img src={creativeCourses} alt="Creative courses" />
               <h3>Creative courses</h3>
               <p>Drawing, coloring, craft, and imagination.</p>
               <button onClick={() => scrollTo("trial")}>
