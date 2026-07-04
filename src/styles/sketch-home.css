@@ -180,17 +180,29 @@
 }
 
 .trial-card button[type="submit"] {
-  width: max-content;
+  width: 190px;
+  height: 68px;
   margin-top: 18px;
-  padding: 15px 31px;
+  padding: 0 22px;
   border: 0;
-  background: #ff6259;
+  background:
+    url("../assets/btn-scribble-transparent.png")
+    center / 100% 100%
+    no-repeat;
   color: #ffffff;
+  font-family: inherit;
   font-size: 1rem;
   font-weight: 950;
   cursor: pointer;
   transform: rotate(-1deg);
-  box-shadow: 9px 9px 0 rgba(0, 74, 173, 0.17);
+  filter: drop-shadow(8px 8px 0 rgba(0, 74, 173, 0.14));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trial-card button[type="submit"]:hover {
+  transform: translateY(-3px) rotate(-1deg);
 }
 
 .trial-card button[type="submit"]:disabled {
@@ -1187,53 +1199,36 @@
 }
 
 .client-program-card button {
-  position: relative;
-  min-width: 190px;
-  min-height: 54px;
-  padding: 10px 22px;
-  border: 0;
-  border-radius: 12px;
-  background: transparent;
-  color: #004aad;
-  font-family: inherit;
-  font-size: 1.05rem;
-  line-height: 1.05;
-  font-weight: 950;
-  text-transform: uppercase;
-  cursor: pointer;
-  z-index: 1;
-  transition: transform 180ms ease;
-}
+   position: relative;
+   width: 210px;
+   height: 70px;
+   padding: 0 22px;
+   border: 0;
+   background:
+     url("../assets/btn-scribble-transparent.png")
+     center / 100% 100%
+     no-repeat;
+   color: #ffffff;
+   font-family: inherit;
+   font-size: 1rem;
+   line-height: 1.05;
+   font-weight: 950;
+   text-transform: uppercase;
+   cursor: pointer;
+   filter: drop-shadow(8px 8px 0 rgba(0, 74, 173, 0.12));
+   transition: transform 180ms ease, filter 180ms ease;
+ }
 
-.client-program-card button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border: 5px solid #ff6259;
-  border-radius: 13px;
-  transform: rotate(-0.8deg);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow:
-    inset 0 0 0 2px rgba(255, 255, 255, 0.22),
-    6px 7px 0 rgba(0, 74, 173, 0.08);
-}
+ .client-program-card button:hover {
+   transform: translateY(-4px) rotate(-1deg);
+   filter: drop-shadow(10px 11px 0 rgba(0, 74, 173, 0.14));
+ }
 
-.client-program-card button::after {
-  content: "";
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 8px;
-  height: 4px;
-  z-index: -1;
-  border-radius: 999px;
-  background: rgba(255, 98, 89, 0.5);
-}
-
-.client-program-card button:hover {
-  transform: translateY(-4px) rotate(-1deg);
-}
+ .client-program-card button::before,
+ .client-program-card button::after {
+   display: none;
+   content: none;
+ }
 
 @media (max-width: 1000px) {
   .client-programs-grid {
