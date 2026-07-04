@@ -1,0 +1,9 @@
+.testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.testimonial-card { position: relative; min-height: 174px; padding: 24px 24px 26px; border: 1px solid rgba(120,154,230,.25); border-radius: 18px; background: rgba(255,255,255,.94); box-shadow: 0 13px 32px rgba(5,35,130,.09); }
+.testimonial-top { display: flex; align-items: center; gap: 16px; margin-bottom: 15px; }
+.avatar { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: #f2f7ff; box-shadow: inset 0 0 0 2px rgba(14,99,255,.12); font-size: 1.85rem; }
+.stars { color: #ffb300; font-size: 1.05rem; letter-spacing: 2px; }
+.testimonial-card p { margin: 0 0 16px; color: #14215f; font-size: .85rem; line-height: 1.7; font-weight: 750; }
+.testimonial-card strong { color: var(--blue-dark); font-size: .86rem; }
+.heart { position: absolute; right: 22px; bottom: 20px; color: #ff2e65; font-size: 1.8rem; line-height: 1; }
+@media (max-width: 900px) { .testimonial-grid { grid-template-columns: 1fr; max-width: 620px; margin: 0 auto; } }

@@ -1,0 +1,129 @@
+.demo-booking-section {
+  padding: 90px 7%;
+  background: linear-gradient(135deg, #eef8ff, #ffffff);
+}
+
+.demo-booking-card {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 40px;
+  align-items: center;
+  padding: 42px;
+  border-radius: 34px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(18, 52, 92, 0.12);
+}
+
+.demo-tag {
+  display: inline-flex;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: #dff1ff;
+  color: #0067b1;
+  font-weight: 800;
+}
+
+.demo-booking-content h2 {
+  margin: 18px 0;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  color: #12345c;
+  line-height: 1.1;
+}
+
+.demo-booking-content p {
+  color: #526273;
+  line-height: 1.7;
+}
+
+.demo-points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.demo-points span {
+  padding: 10px 15px;
+  border-radius: 999px;
+  background: #f2f8ff;
+  color: #174067;
+  font-weight: 700;
+}
+
+.demo-booking-form {
+  display: grid;
+  gap: 16px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.demo-booking-form input,
+.demo-booking-form select,
+.demo-booking-form textarea {
+  width: 100%;
+  padding: 15px 16px;
+  border: 1px solid #d8e7f5;
+  border-radius: 16px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.demo-booking-form input:focus,
+.demo-booking-form select:focus,
+.demo-booking-form textarea:focus {
+  border-color: #1786d6;
+  box-shadow: 0 0 0 4px rgba(23, 134, 214, 0.12);
+}
+
+.demo-booking-form button {
+  padding: 15px 22px;
+  border: none;
+  border-radius: 999px;
+  background: #1378c9;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.demo-booking-form button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.form-success {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #e8fff1;
+  color: #087536;
+  font-weight: 700;
+}
+
+.form-error {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fff0f0;
+  color: #b42318;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .demo-booking-card {
+    grid-template-columns: 1fr;
+    padding: 28px;
+  }
+}
+
+@media (max-width: 560px) {
+  .demo-booking-section {
+    padding: 60px 5%;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

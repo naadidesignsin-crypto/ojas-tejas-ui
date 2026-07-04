@@ -1,0 +1,96 @@
+:root {
+  --blue: #0e63ff;
+  --blue-dark: #061a6b;
+  --text: #061a6b;
+  --muted: #394783;
+  --line: #c9d8ff;
+  --white: #ffffff;
+  --shadow: 0 18px 46px rgba(5, 35, 130, 0.13);
+  --header-height: 76px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-width: 320px;
+  color: var(--text);
+  font-family: Inter, ui-rounded, "Trebuchet MS", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background:
+    radial-gradient(circle at 25% 10%, rgba(14, 99, 255, 0.055), transparent 19rem),
+    radial-gradient(circle at 80% 15%, rgba(255, 177, 35, 0.10), transparent 20rem),
+    linear-gradient(180deg, #ffffff 0%, #fcfdff 42%, #ffffff 100%);
+}
+button, input { font: inherit; }
+button { cursor: pointer; }
+img, video { display: block; max-width: 100%; }
+
+.app-shell { position: relative; min-height: 100vh; overflow: hidden; }
+.site-header, main, .footer { position: relative; z-index: 2; }
+.page-container { width: min(1240px, calc(100% - 74px)); margin: 0 auto; }
+.section-anchor { scroll-margin-top: calc(var(--header-height) + 22px); }
+
+.primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 58px;
+  padding: 0 30px;
+  border: 0;
+  border-radius: 14px;
+  color: #fff;
+  background: linear-gradient(135deg, #126cff, #0054ea);
+  box-shadow: 0 15px 28px rgba(0, 83, 232, 0.28);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.primary-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 32px rgba(0, 83, 232, .33); }
+.small-btn { min-height: 42px; padding: 0 18px; border-radius: 9px; font-size: .84rem; }
+
+.section-title { text-align: center; margin-bottom: 26px; }
+.section-title h2 {
+  margin: 0;
+  color: var(--blue-dark);
+  font-size: clamp(1.68rem, 3vw, 2.18rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+.section-title span { display: inline-block; width: 54px; height: 4px; margin-top: 9px; border-radius: 99px; background: var(--blue); }
+
+.floating-layer { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.float {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.6rem, 2.6vw, 3rem);
+  line-height: 1;
+  opacity: .9;
+  filter: drop-shadow(0 8px 12px rgba(13, 83, 220, .10));
+  animation: floatMove 5.5s ease-in-out infinite;
+}
+.float.blue { color: #1380ff; } .float.red { color: #ff2c67; } .float.green { color: #22bb63; }
+.float.orange { color: #ff9900; } .float.violet { color: #8e4dff; }
+.float.crayon, .float.brush { font-size: clamp(3rem, 7vw, 6.5rem); }
+.float-1 { top: 6.5%; left: 5.7%; } .float-2 { top: 7.8%; left: 32%; animation-delay: .7s; }
+.float-3 { top: 5.2%; right: 41%; animation-delay: 1s; } .float-4 { top: 7.2%; right: 12%; animation-delay: 1.3s; }
+.float-5 { top: 52%; left: 5%; animation-delay: .5s; } .float-6 { top: 33%; right: 9%; animation-delay: 1.1s; }
+.float-7 { top: 78%; right: 5%; animation-delay: .3s; } .float-8 { top: 19%; right: 1.5%; font-size: clamp(3rem, 8vw, 7.6rem); transform: rotate(-16deg); color: #1492ff; opacity: .82; }
+.float-9 { top: 55%; right: 6%; animation-delay: 2s; } .float-10 { top: 6.5%; right: 3.8%; font-size: clamp(2.6rem, 5vw, 5.2rem); animation-delay: 1.6s; }
+.float-11 { top: 12.5%; left: 2%; transform: rotate(-20deg); } .float-12 { top: 15%; right: 2.4%; transform: rotate(15deg); animation-delay: 1.2s; }
+.float-13 { top: 2.1%; right: .7%; transform: rotate(110deg); animation-delay: .9s; } .float-14 { bottom: .5%; right: .8%; transform: rotate(115deg); animation-delay: 1.7s; }
+@keyframes floatMove { 0%,100% { translate: 0 0; } 50% { translate: 0 -12px; } }
+
+@media (max-width: 900px) {
+  :root { --header-height: 70px; }
+  .page-container { width: min(100% - 30px, 760px); }
+  .float.crayon, .float.brush { display: none; }
+}
+@media (max-width: 560px) {
+  .page-container { width: min(100% - 22px, 500px); }
+  .primary-btn { width: 100%; min-height: 52px; }
+  .float { opacity: .35; }
+  .float-8, .float-10 { display: none; }
+}

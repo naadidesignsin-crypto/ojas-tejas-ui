@@ -1,0 +1,260 @@
+.admin-page {
+  min-height: 100vh;
+  padding: 50px 6%;
+  background: linear-gradient(135deg, #eef6ff, #ffffff);
+  color: #071f60;
+}
+
+.admin-login-card {
+  width: min(100%, 430px);
+  margin: 80px auto;
+  padding: 34px;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(13, 74, 150, 0.14);
+}
+
+.admin-login-card h1 {
+  margin-bottom: 8px;
+  font-size: 2rem;
+}
+
+.admin-login-card p {
+  margin-bottom: 24px;
+  color: #42526b;
+}
+
+.admin-login-card form {
+  display: grid;
+  gap: 16px;
+}
+
+.admin-login-card input {
+  padding: 15px 16px;
+  border: 1px solid #d8e5f5;
+  border-radius: 15px;
+  outline: none;
+  font-size: 1rem;
+}
+
+.admin-login-card input:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.12);
+}
+
+.admin-login-card button,
+.admin-header button {
+  border: none;
+  border-radius: 999px;
+  padding: 13px 22px;
+  background: #0d6efd;
+  color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-error {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fff0f0;
+  color: #b42318;
+  font-weight: 700;
+}
+
+.admin-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.admin-header h1 {
+  margin-bottom: 6px;
+}
+
+.admin-table-wrapper {
+  overflow-x: auto;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(13, 74, 150, 0.12);
+}
+
+.admin-table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 950px;
+}
+
+.admin-table-wrapper th,
+.admin-table-wrapper td {
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #e7eef8;
+  font-size: 0.92rem;
+}
+
+.admin-table-wrapper th {
+  background: #f3f8ff;
+  color: #071f60;
+}
+
+.admin-table-wrapper td {
+  color: #263750;
+}
+
+@media (max-width: 700px) {
+  .admin-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-login-card {
+    margin: 40px auto;
+    padding: 24px;
+  }
+
+  .send-link-help {
+    margin: 0;
+    color: #526273;
+    font-size: 0.95rem;
+  }
+
+  .empty-bookings {
+    text-align: center;
+    font-weight: 700;
+    color: #526273;
+  }
+
+  .send-link-btn {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 16px;
+    background: #0d6efd;
+    color: #ffffff;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .send-link-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .admin-activity-section {
+    margin-bottom: 30px;
+    padding: 24px;
+    border-radius: 26px;
+    background: #ffffff;
+    box-shadow: 0 20px 55px rgba(13, 74, 150, 0.1);
+  }
+
+  .admin-section-title {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .admin-section-title h2 {
+    margin: 0 0 6px;
+    color: #071f60;
+  }
+
+  .admin-section-title p {
+    margin: 0;
+    color: #526273;
+  }
+
+  .admin-section-title span {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #fff3cd;
+    color: #7a4d00;
+    font-weight: 900;
+  }
+
+  .empty-activity {
+    padding: 16px;
+    border-radius: 18px;
+    background: #f3f8ff;
+    color: #526273;
+    font-weight: 800;
+  }
+
+  .activity-review-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .activity-review-card {
+    overflow: hidden;
+    border-radius: 22px;
+    background: #f8fbff;
+    border: 1px solid #e3edf8;
+  }
+
+  .activity-review-card img {
+    width: 100%;
+    height: 210px;
+    object-fit: contain;
+    background: #ffffff;
+    border-bottom: 1px solid #e3edf8;
+  }
+
+  .activity-review-content {
+    padding: 16px;
+  }
+
+  .activity-review-content h3 {
+    margin: 0 0 8px;
+    color: #071f60;
+  }
+
+  .activity-review-content p {
+    margin: 0 0 14px;
+    color: #526273;
+  }
+
+  .activity-review-content button {
+    width: 100%;
+    border: none;
+    border-radius: 999px;
+    padding: 11px 14px;
+    background: #1378c9;
+    color: #ffffff;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .activity-review-content button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 950px) {
+    .activity-review-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 620px) {
+    .activity-review-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .admin-section-title {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+}

@@ -1,0 +1,10 @@
+.split-section, .gallery-section, .about-section, .why-section, .testimonials-section, .subscribe-section { padding: clamp(26px, 5vw, 52px) 0; }
+.split-section .page-container, .gallery-section .page-container, .about-section .page-container, .why-section .page-container, .testimonials-section .page-container { border-top: 2px solid rgba(120,154,230,.34); padding-top: clamp(18px, 3vw, 32px); }
+.split-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); align-items: center; gap: clamp(26px, 5vw, 66px); }
+.split-grid.reverse { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); grid-template-areas: "copy video"; }
+.split-grid.reverse > div:first-child { grid-area: copy; }
+.split-grid.reverse > div:last-child { grid-area: video; }
+@media (max-width: 850px) {
+  .split-grid, .split-grid.reverse { grid-template-columns: 1fr; grid-template-areas: none; gap: 20px; text-align: center; }
+  .split-grid.reverse > div:first-child, .split-grid.reverse > div:last-child { grid-area: auto; }
+}
