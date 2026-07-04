@@ -16,6 +16,7 @@ import { createDemoBooking } from "../api/demoBookingApi";
 import { createBasicAuthToken, getAdminBookings } from "../api/adminApi";
 import ActivityDrawingModal from "./ActivityDrawingModal.jsx";
 import WorkshopDatesModal from "./WorkshopDatesModal.jsx";
+import StudentLoginPanel from "./StudentLoginPanel.jsx";
 import "../styles/sketch-home.css";
 
 const initialForm = {
@@ -41,6 +42,8 @@ function SketchHomePage() {
   const [videoStarted, setVideoStarted] = useState(false);
 
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [loginType, setLoginType] = useState("student");
+
   const [adminUsername, setAdminUsername] = useState("admin");
   const [adminPassword, setAdminPassword] = useState("");
   const [adminLoginError, setAdminLoginError] = useState("");
@@ -99,19 +102,14 @@ function SketchHomePage() {
   };
 
   const openLogin = () => {
-    const savedToken = localStorage.getItem("adminToken");
-
-    if (savedToken) {
-      window.location.href = "/admin";
-      return;
-    }
-
     setShowLoginModal(true);
+    setLoginType("student");
     setAdminLoginError("");
   };
 
   const closeLogin = () => {
     setShowLoginModal(false);
+    setLoginType("student");
     setAdminPassword("");
     setAdminLoginError("");
     setAdminLoginLoading(false);
@@ -459,42 +457,86 @@ function SketchHomePage() {
 
       {showLoginModal && (
         <div className="landing-login-backdrop">
-          <div className="landing-login-card">
+          <div className="landing-login-card landing-login-card-wide">
             <button className="landing-login-close" onClick={closeLogin}>
               ✕
             </button>
 
-            <span className="landing-login-badge">🔐 Admin Access</span>
+            <span className="landing-login-badge">🔐 Portal Access</span>
 
             <h2>Login</h2>
 
             <p>
-              Enter admin credentials to open the Admin Portal. Invalid users
-              will remain on the Home Page.
+              Students can view enabled live classes. Admins can manage
+              bookings, artworks, and workshops.
             </p>
 
-            <form onSubmit={handleAdminLogin}>
-              <input
-                type="text"
-                placeholder="Admin username"
-                value={adminUsername}
-                onChange={(event) => setAdminUsername(event.target.value)}
-              />
-
-              <input
-                type="password"
-                placeholder="Admin password"
-                value={adminPassword}
-                onChange={(event) => setAdminPassword(event.target.value)}
-              />
-
-              <button type="submit" disabled={adminLoginLoading}>
-                {adminLoginLoading ? "Checking..." : "Login"}
+            <div className="landing-login-tabs">
+              <button
+                type="button"
+                className={loginType === "student" ? "active" : ""}
+                onClick={() => {
+                  setLoginType("student");
+                  setAdminLoginError("");
+                }}
+              >
+                Student Login
               </button>
-            </form>
 
-            {adminLoginError && (
-              <p className="landing-login-error">{adminLoginError}</p>
+              <button
+                type="button"
+                className={loginType === "admin" ? "active" : ""}
+                onClick={() => {
+                  setLoginType("admin");
+                  setAdminLoginError("");
+                }}
+              >
+                Admin Login
+              </button>
+            </div>
+
+            {loginType === "student" && (
+              <StudentLoginPanel
+                onBookDemo={() => {
+                  closeLogin();
+                  scrollTo("trial");
+                }}
+              />
+            )}
+
+            {loginType === "admin" && (
+              <div className="admin-login-panel-home">
+                <h3>Admin Login</h3>
+
+                <p>
+                  Enter admin credentials to open the Admin Portal. Invalid
+                  users will remain on the Home Page.
+                </p>
+
+                <form onSubmit={handleAdminLogin}>
+                  <input
+                    type="text"
+                    placeholder="Admin username"
+                    value={adminUsername}
+                    onChange={(event) => setAdminUsername(event.target.value)}
+                  />
+
+                  <input
+                    type="password"
+                    placeholder="Admin password"
+                    value={adminPassword}
+                    onChange={(event) => setAdminPassword(event.target.value)}
+                  />
+
+                  <button type="submit" disabled={adminLoginLoading}>
+                    {adminLoginLoading ? "Checking..." : "Open Admin Portal"}
+                  </button>
+                </form>
+
+                {adminLoginError && (
+                  <p className="landing-login-error">{adminLoginError}</p>
+                )}
+              </div>
             )}
           </div>
         </div>
