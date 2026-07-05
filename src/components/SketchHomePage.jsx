@@ -513,8 +513,7 @@ function SketchHomePage() {
                 <h2>Login</h2>
 
                 <p>
-                  Students can login using registered email and phone. Admin can
-                  login using admin username and password.
+                  Students can login using registered email and phone.
                 </p>
 
                 <div className="unified-login-panel">
@@ -538,10 +537,10 @@ function SketchHomePage() {
                     </button>
                   </form>
 
-                  <p className="unified-login-helper">
+                 {/*  <p className="unified-login-helper">
                     Student example: parent email + phone number. Admin example:
                     admin username + password.
-                  </p>
+                  </p> */}
 
                   {loginError && (
                     <p className="landing-login-error">{loginError}</p>
