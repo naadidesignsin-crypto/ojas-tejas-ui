@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import logo from "../assets/ojas-logo-header.png";
+import logoFooter from "../assets/ojas-logo-footer.png";
 import boardImage from "../assets/board-transparent.png";
 import colorImage from "../assets/color-transparent.png";
 import storyLedTeaching from "../assets/different/story-led-teaching.png";
@@ -14,10 +15,11 @@ import artGallery from "../assets/programs/art-gallery.png";
 import creativeCourses from "../assets/programs/creative-courses.png";
 import { createDemoBooking } from "../api/demoBookingApi";
 import { createBasicAuthToken, getAdminBookings } from "../api/adminApi";
+import { studentLogin } from "../api/studentApi";
 import ActivityDrawingModal from "./ActivityDrawingModal.jsx";
 import WorkshopDatesModal from "./WorkshopDatesModal.jsx";
-import StudentLoginPanel from "./StudentLoginPanel.jsx";
 import "../styles/sketch-home.css";
+import "../styles/student-portal.css";
 
 const initialForm = {
   parentName: "",
@@ -42,12 +44,11 @@ function SketchHomePage() {
   const [videoStarted, setVideoStarted] = useState(false);
 
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [loginType, setLoginType] = useState("student");
-
-  const [adminUsername, setAdminUsername] = useState("admin");
-  const [adminPassword, setAdminPassword] = useState("");
-  const [adminLoginError, setAdminLoginError] = useState("");
-  const [adminLoginLoading, setAdminLoginLoading] = useState(false);
+  const [loginIdentity, setLoginIdentity] = useState("");
+  const [loginSecret, setLoginSecret] = useState("");
+  const [loginError, setLoginError] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [studentData, setStudentData] = useState(null);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -102,35 +103,50 @@ function SketchHomePage() {
   };
 
   const openLogin = () => {
+    const savedToken = localStorage.getItem("adminToken");
+
+    if (savedToken) {
+      window.location.href = "/admin";
+      return;
+    }
+
     setShowLoginModal(true);
-    setLoginType("student");
-    setAdminLoginError("");
+    setLoginError("");
   };
 
   const closeLogin = () => {
     setShowLoginModal(false);
-    setLoginType("student");
-    setAdminPassword("");
-    setAdminLoginError("");
-    setAdminLoginLoading(false);
+    setLoginIdentity("");
+    setLoginSecret("");
+    setLoginError("");
+    setLoginLoading(false);
+    setStudentData(null);
   };
 
-  const handleAdminLogin = async (event) => {
+  const handleUnifiedLogin = async (event) => {
     event.preventDefault();
 
-    if (!adminUsername.trim() || !adminPassword.trim()) {
-      setAdminLoginError("Please enter admin username and password.");
+    const identity = loginIdentity.trim();
+    const secret = loginSecret.trim();
+
+    if (!identity || !secret) {
+      setLoginError("Please enter login details.");
       return;
     }
 
-    setAdminLoginLoading(true);
-    setAdminLoginError("");
+    setLoginLoading(true);
+    setLoginError("");
+    setStudentData(null);
 
     try {
-      const token = createBasicAuthToken(
-        adminUsername.trim(),
-        adminPassword.trim()
-      );
+      if (identity.includes("@")) {
+        const data = await studentLogin(identity, secret);
+        localStorage.removeItem("adminToken");
+        setStudentData(data);
+        return;
+      }
+
+      const token = createBasicAuthToken(identity, secret);
 
       await getAdminBookings(token);
 
@@ -138,10 +154,38 @@ function SketchHomePage() {
       window.location.href = "/admin";
     } catch (error) {
       localStorage.removeItem("adminToken");
-      setAdminLoginError("Invalid admin credentials. You are still on Home Page.");
+      setStudentData(null);
+      setLoginError(
+        "Login failed. Use registered student email with phone, or valid admin username with password."
+      );
     } finally {
-      setAdminLoginLoading(false);
+      setLoginLoading(false);
     }
+  };
+
+  const formatDateTime = (value) => {
+    if (!value) {
+      return "Recently updated";
+    }
+
+    return new Date(value).toLocaleString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  };
+
+  const openLiveClass = (link) => {
+    window.open(link, "_blank", "noopener,noreferrer");
+  };
+
+  const resetStudentLogin = () => {
+    setStudentData(null);
+    setLoginIdentity("");
+    setLoginSecret("");
+    setLoginError("");
   };
 
   return (
@@ -425,7 +469,7 @@ function SketchHomePage() {
 
       <footer className="sketch-footer" id="contact">
         <div>
-          <img src={logo} alt="Ojas by Tejas" />
+          <img src={logoFooter} alt="Ojas by Tejas" />
           <p>Trunkful of Colors, Brushful of Dreams</p>
         </div>
 
@@ -464,78 +508,137 @@ function SketchHomePage() {
 
             <span className="landing-login-badge">🔐 Portal Access</span>
 
-            <h2>Login</h2>
-
-            <p>
-              Students can view enabled live classes. Admins can manage
-              bookings, artworks, and workshops.
-            </p>
-
-            <div className="landing-login-tabs">
-              <button
-                type="button"
-                className={loginType === "student" ? "active" : ""}
-                onClick={() => {
-                  setLoginType("student");
-                  setAdminLoginError("");
-                }}
-              >
-                Student Login
-              </button>
-
-              <button
-                type="button"
-                className={loginType === "admin" ? "active" : ""}
-                onClick={() => {
-                  setLoginType("admin");
-                  setAdminLoginError("");
-                }}
-              >
-                Admin Login
-              </button>
-            </div>
-
-            {loginType === "student" && (
-              <StudentLoginPanel
-                onBookDemo={() => {
-                  closeLogin();
-                  scrollTo("trial");
-                }}
-              />
-            )}
-
-            {loginType === "admin" && (
-              <div className="admin-login-panel-home">
-                <h3>Admin Login</h3>
+            {!studentData && (
+              <>
+                <h2>Login</h2>
 
                 <p>
-                  Enter admin credentials to open the Admin Portal. Invalid
-                  users will remain on the Home Page.
+                  Students can login using registered email and phone. Admin can
+                  login using admin username and password.
                 </p>
 
-                <form onSubmit={handleAdminLogin}>
-                  <input
-                    type="text"
-                    placeholder="Admin username"
-                    value={adminUsername}
-                    onChange={(event) => setAdminUsername(event.target.value)}
-                  />
+                <div className="unified-login-panel">
+                  <form onSubmit={handleUnifiedLogin} className="unified-login-form">
+                    <input
+                      type="text"
+                      placeholder="Email or Admin username"
+                      value={loginIdentity}
+                      onChange={(event) => setLoginIdentity(event.target.value)}
+                    />
 
-                  <input
-                    type="password"
-                    placeholder="Admin password"
-                    value={adminPassword}
-                    onChange={(event) => setAdminPassword(event.target.value)}
-                  />
+                    <input
+                      type="password"
+                      placeholder="Phone or Admin password"
+                      value={loginSecret}
+                      onChange={(event) => setLoginSecret(event.target.value)}
+                    />
 
-                  <button type="submit" disabled={adminLoginLoading}>
-                    {adminLoginLoading ? "Checking..." : "Open Admin Portal"}
-                  </button>
-                </form>
+                    <button type="submit" disabled={loginLoading}>
+                      {loginLoading ? "Checking..." : "Login"}
+                    </button>
+                  </form>
 
-                {adminLoginError && (
-                  <p className="landing-login-error">{adminLoginError}</p>
+                  <p className="unified-login-helper">
+                    Student example: parent email + phone number. Admin example:
+                    admin username + password.
+                  </p>
+
+                  {loginError && (
+                    <p className="landing-login-error">{loginError}</p>
+                  )}
+                </div>
+              </>
+            )}
+
+            {studentData && (
+              <div className="student-portal-panel">
+                <div className="student-portal-welcome">
+                  <span>🎨 Student Portal</span>
+
+                  <h3>Hello {studentData.childName}</h3>
+
+                  <p>
+                    Registered under {studentData.parentName}. You can see only
+                    the live classes enabled for your account.
+                  </p>
+                </div>
+
+                <div className="student-portal-stats">
+                  <article>
+                    <strong>{studentData.registeredBookings}</strong>
+                    <span>Registered bookings</span>
+                  </article>
+
+                  <article>
+                    <strong>{studentData.enabledLiveClasses}</strong>
+                    <span>Live classes enabled</span>
+                  </article>
+                </div>
+
+                {studentData.liveClasses.length === 0 ? (
+                  <div className="student-empty-live">
+                    <h4>No live class enabled yet</h4>
+
+                    <p>
+                      Your registration is found, but admin has not enabled a
+                      live class link yet. Please check again later.
+                    </p>
+
+                    <button
+                      onClick={() => {
+                        closeLogin();
+                        scrollTo("trial");
+                      }}
+                    >
+                      Book another demo
+                    </button>
+                  </div>
+                ) : (
+                  <div className="student-live-list">
+                    {studentData.liveClasses.map((liveClass) => (
+                      <article
+                        className="student-live-card"
+                        key={liveClass.bookingId}
+                      >
+                        <div>
+                          <span className="student-live-badge">
+                            Live Class
+                          </span>
+
+                          <h4>{liveClass.preferredClass}</h4>
+
+                          <p>
+                            Student: {liveClass.childName} | Age:{" "}
+                            {liveClass.childAge || "-"}
+                          </p>
+
+                          {liveClass.note && (
+                            <p className="student-live-note">
+                              Note: {liveClass.note}
+                            </p>
+                          )}
+
+                          <small>
+                            Enabled on {formatDateTime(liveClass.sentAt)}
+                          </small>
+                        </div>
+
+                        <button
+                          onClick={() => openLiveClass(liveClass.liveLink)}
+                        >
+                          Join Class
+                        </button>
+                      </article>
+                    ))}
+                  </div>
                 )}
+
+                <button
+                  className="student-login-again-btn"
+                  onClick={resetStudentLogin}
+                >
+                  Login with another account
+                </button>
               </div>
             )}
           </div>

@@ -2150,3 +2150,68 @@
     font-size: 0.88rem;
   }
 }
+
+.unified-login-panel {
+  padding: 20px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.42);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.24);
+}
+
+.unified-login-form {
+  display: grid;
+  gap: 14px;
+}
+
+.unified-login-form input {
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid rgba(0, 74, 173, 0.48);
+  background: transparent;
+  padding: 11px 4px;
+  color: #004aad;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 900;
+  outline: none;
+}
+
+.unified-login-form input::placeholder {
+  color: #004aad;
+  opacity: 0.8;
+}
+
+.unified-login-form button {
+  width: 170px;
+  height: 62px;
+  border: 0;
+  background:
+    url("../assets/btn-scribble-transparent.png")
+    center / 100% 100%
+    no-repeat;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 950;
+  cursor: pointer;
+  filter: drop-shadow(7px 7px 0 rgba(0, 74, 173, 0.13));
+}
+
+.unified-login-form button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.unified-login-helper {
+  margin: 14px 0 0 !important;
+  color: #004aad;
+  font-size: 0.88rem !important;
+  line-height: 1.4;
+  font-weight: 850 !important;
+}
+
+@media (max-width: 640px) {
+  .unified-login-form button {
+    width: 100%;
+  }
+}
