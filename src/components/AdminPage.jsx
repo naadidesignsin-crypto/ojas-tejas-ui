@@ -7,6 +7,7 @@ import {
   approveActivitySubmission
 } from "../api/adminApi";
 import AdminWorkshops from "./AdminWorkshops.jsx";
+import AdminWorkshopBookings from "./AdminWorkshopBookings.jsx";
 import "../styles/admin.css";
 
 function AdminPage() {
@@ -214,8 +215,8 @@ function AdminPage() {
             <span className="admin-eyebrow">Admin Portal</span>
             <h1>📋 Ojas Dashboard</h1>
             <p>
-              Manage demo links, student artworks, and workshops from one clean
-              place.
+              Manage demo links, student artworks, workshops, and workshop
+              bookings from one clean place.
             </p>
           </div>
 
@@ -286,6 +287,19 @@ function AdminPage() {
             <strong>+</strong>
             <small>Manage workshops</small>
           </button>
+
+          <button
+            className={
+              activeTab === "workshopBookings"
+                ? "admin-summary-card active"
+                : "admin-summary-card"
+            }
+            onClick={() => setActiveTab("workshopBookings")}
+          >
+            <span>📅</span>
+            <strong>View</strong>
+            <small>Workshop bookings</small>
+          </button>
         </div>
 
         <div className="admin-tab-bar">
@@ -315,6 +329,13 @@ function AdminPage() {
             onClick={() => setActiveTab("workshops")}
           >
             Workshops
+          </button>
+
+          <button
+            className={activeTab === "workshopBookings" ? "active" : ""}
+            onClick={() => setActiveTab("workshopBookings")}
+          >
+            Workshop Bookings
           </button>
         </div>
 
@@ -364,6 +385,18 @@ function AdminPage() {
 
                 <button onClick={() => setActiveTab("workshops")}>
                   Manage Workshops
+                </button>
+              </article>
+
+              <article>
+                <h3>📅 Workshop Bookings</h3>
+                <p>
+                  View workshop booking requests and update status like NEW,
+                  CONFIRMED, CANCELLED, or COMPLETED.
+                </p>
+
+                <button onClick={() => setActiveTab("workshopBookings")}>
+                  View Bookings
                 </button>
               </article>
             </div>
@@ -455,9 +488,7 @@ function AdminPage() {
 
                       <td>
                         {booking.liveLinkSent ? (
-                          <span className="admin-link-status sent">
-                            Sent
-                          </span>
+                          <span className="admin-link-status sent">Sent</span>
                         ) : (
                           <span className="admin-link-status not-sent">
                             Not sent
@@ -533,6 +564,12 @@ function AdminPage() {
         {activeTab === "workshops" && (
           <section className="admin-clean-panel no-panel-bg">
             <AdminWorkshops authToken={authToken} />
+          </section>
+        )}
+
+        {activeTab === "workshopBookings" && (
+          <section className="admin-clean-panel">
+            <AdminWorkshopBookings authToken={authToken} />
           </section>
         )}
       </div>

@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { getPublishedWorkshops } from "../api/workshopApi";
+import WorkshopBookingModal from "./WorkshopBookingModal.jsx";
+import "../styles/workshop-booking.css";
 
 function WorkshopDatesModal({ onClose, onBookDemo }) {
   const [workshops, setWorkshops] = useState([]);
-  const [selectedWorkshopId, setSelectedWorkshopId] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    loadWorkshops();
-  }, []);
+  const [selectedWorkshop, setSelectedWorkshop] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDateLabel, setSelectedDateLabel] = useState("");
+  const [bookingSuccessMessage, setBookingSuccessMessage] = useState("");
 
   const loadWorkshops = async () => {
     setLoading(true);
@@ -17,153 +19,227 @@ function WorkshopDatesModal({ onClose, onBookDemo }) {
 
     try {
       const data = await getPublishedWorkshops();
-      setWorkshops(data);
-
-      if (data.length > 0) {
-        setSelectedWorkshopId(data[0].id);
-      }
+      setWorkshops(Array.isArray(data) ? data : []);
     } catch (err) {
-      setError(err.message || "Unable to load workshops");
+      setError(err.message || "Unable to load workshops.");
     } finally {
       setLoading(false);
     }
   };
 
-  const selectedWorkshop = workshops.find(
-    (workshop) => workshop.id === selectedWorkshopId
-  );
+  useEffect(() => {
+    loadWorkshops();
+  }, []);
 
-  const formatDate = (value) => {
+  const getWorkshopTitle = (workshop) => {
+    return (
+      workshop.title ||
+      workshop.workshopTitle ||
+      workshop.name ||
+      "Art Workshop"
+    );
+  };
+
+  const getWorkshopDescription = (workshop) => {
+    return (
+      workshop.description ||
+      workshop.shortDescription ||
+      "Creative art workshop for young artists."
+    );
+  };
+
+  const getWorkshopDates = (workshop) => {
+    if (Array.isArray(workshop.dates)) {
+      return workshop.dates;
+    }
+
+    if (Array.isArray(workshop.workshopDates)) {
+      return workshop.workshopDates;
+    }
+
+    if (Array.isArray(workshop.availableDates)) {
+      return workshop.availableDates;
+    }
+
+    return [];
+  };
+
+  const formatDateTime = (value) => {
     if (!value) {
       return "";
     }
 
-    return new Date(`${value}T00:00:00`).toLocaleDateString("en-IN", {
+    return new Date(value).toLocaleString("en-IN", {
       day: "2-digit",
       month: "short",
-      year: "numeric"
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
     });
   };
 
-  const formatTime = (value) => {
-    if (!value) {
-      return "";
+  const getDateLabel = (date) => {
+    if (!date) {
+      return "Workshop date";
     }
 
-    return value.slice(0, 5);
+    if (date.dateLabel) {
+      return date.dateLabel;
+    }
+
+    if (date.label) {
+      return date.label;
+    }
+
+    if (date.title) {
+      return date.title;
+    }
+
+    if (date.startDateTime) {
+      return formatDateTime(date.startDateTime);
+    }
+
+    if (date.workshopDate) {
+      return date.workshopDate;
+    }
+
+    if (date.date) {
+      return date.date;
+    }
+
+    return "Workshop date";
+  };
+
+  const handleBookWorkshop = (workshop, date) => {
+    setSelectedWorkshop(workshop);
+    setSelectedDate(date);
+    setSelectedDateLabel(getDateLabel(date));
+    setBookingSuccessMessage("");
+  };
+
+  const closeBookingModal = () => {
+    setSelectedWorkshop(null);
+    setSelectedDate(null);
+    setSelectedDateLabel("");
   };
 
   return (
-    <div className="workshop-modal-backdrop">
-      <div className="workshop-modal">
-        <div className="workshop-modal-header">
-          <div>
-            <span>🎨 Ojas Workshops</span>
-            <h2>Choose your creative workshop</h2>
-            <p>Select a workshop and view available dates.</p>
-          </div>
+    <div className="workshop-dates-backdrop">
+      <div className="workshop-dates-card">
+        <button className="workshop-dates-close" onClick={onClose}>
+          ✕
+        </button>
 
-          <button onClick={onClose}>✕</button>
-        </div>
+        <span className="workshop-dates-badge">🧑‍🎨 Ojas Workshops</span>
 
-        {loading && <p className="workshop-modal-info">Loading workshops...</p>}
-        {error && <p className="workshop-modal-error">{error}</p>}
+        <h2>Upcoming Art Workshops</h2>
 
-        {!loading && workshops.length === 0 && (
-          <div className="workshop-empty-state">
-            <h3>No workshops published yet</h3>
-            <p>Please check again soon. New creative workshops will be added by admin.</p>
+        <p className="workshop-dates-subtitle">
+          Select a workshop date and book your child&apos;s seat.
+        </p>
+
+        {loading && (
+          <div className="workshop-dates-status">
+            <p>Loading workshops...</p>
           </div>
         )}
 
-        {workshops.length > 0 && (
-          <div className="workshop-modal-layout">
-            <aside className="workshop-list-panel">
-              {workshops.map((workshop) => (
-                <button
-                  key={workshop.id}
-                  className={
-                    selectedWorkshopId === workshop.id ? "active-workshop" : ""
-                  }
-                  onClick={() => setSelectedWorkshopId(workshop.id)}
-                >
-                  {workshop.imageData ? (
-                    <img src={workshop.imageData} alt={workshop.title} />
-                  ) : (
-                    <span>🎨</span>
-                  )}
+        {error && (
+          <div className="workshop-dates-status workshop-dates-error">
+            <p>{error}</p>
+            <button onClick={loadWorkshops}>Try Again</button>
+          </div>
+        )}
 
-                  <strong>{workshop.title}</strong>
-                </button>
-              ))}
-            </aside>
+        {bookingSuccessMessage && (
+          <p className="workshop-dates-success">{bookingSuccessMessage}</p>
+        )}
 
-            {selectedWorkshop && (
-              <section className="workshop-detail-panel">
-                <div className="workshop-detail-hero">
-                  <div className="workshop-detail-image">
-                    {selectedWorkshop.imageData ? (
-                      <img
-                        src={selectedWorkshop.imageData}
-                        alt={selectedWorkshop.title}
-                      />
-                    ) : (
-                      <span>🎨</span>
-                    )}
-                  </div>
+        {!loading && !error && workshops.length === 0 && (
+          <div className="workshop-dates-empty">
+            <h3>No workshops published yet</h3>
 
-                  <div>
-                    <h3>{selectedWorkshop.title}</h3>
-                    <p>{selectedWorkshop.description}</p>
+            <p>
+              New workshop dates will appear here once admin publishes them.
+            </p>
 
-                    <div className="workshop-public-meta">
-                      {selectedWorkshop.ageGroup && (
-                        <span>Age: {selectedWorkshop.ageGroup}</span>
-                      )}
-
-                      {selectedWorkshop.level && (
-                        <span>Level: {selectedWorkshop.level}</span>
-                      )}
-
-                      {selectedWorkshop.priceLabel && (
-                        <span>{selectedWorkshop.priceLabel}</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="workshop-date-public-list">
-                  <h4>Available dates</h4>
-
-                  {selectedWorkshop.dates?.length > 0 ? (
-                    selectedWorkshop.dates.map((date) => (
-                      <article key={date.id} className="workshop-date-public-card">
-                        <div>
-                          <strong>{formatDate(date.workshopDate)}</strong>
-                          <span>
-                            {formatTime(date.startTime)} - {formatTime(date.endTime)}
-                          </span>
-                        </div>
-
-                        <div>
-                          <strong>{date.mode || "Online"}</strong>
-                          <span>{date.seats} seats available</span>
-                        </div>
-
-                        <button onClick={onBookDemo}>Book Demo</button>
-                      </article>
-                    ))
-                  ) : (
-                    <p className="workshop-modal-info">
-                      Dates will be announced soon.
-                    </p>
-                  )}
-                </div>
-              </section>
+            {onBookDemo && (
+              <button onClick={onBookDemo}>Book Free Demo</button>
             )}
           </div>
         )}
+
+        {!loading && !error && workshops.length > 0 && (
+          <div className="workshop-list">
+            {workshops.map((workshop) => {
+              const dates = getWorkshopDates(workshop);
+
+              return (
+                <article className="workshop-item" key={workshop.id}>
+                  <div className="workshop-item-main">
+                    <h3>{getWorkshopTitle(workshop)}</h3>
+
+                    <p>{getWorkshopDescription(workshop)}</p>
+
+                    {workshop.price && (
+                      <span className="workshop-price">
+                        Fee: {workshop.price}
+                      </span>
+                    )}
+                  </div>
+
+                  {dates.length === 0 ? (
+                    <div className="workshop-no-dates">
+                      Dates will be announced soon.
+                    </div>
+                  ) : (
+                    <div className="workshop-date-list">
+                      {dates.map((date) => (
+                        <div className="workshop-date-row" key={date.id}>
+                          <div>
+                            <strong>{getDateLabel(date)}</strong>
+
+                            {date.seats && (
+                              <small>{date.seats} seats available</small>
+                            )}
+
+                            {date.availableSeats && (
+                              <small>
+                                {date.availableSeats} seats available
+                              </small>
+                            )}
+                          </div>
+
+                          <button
+                            onClick={() => handleBookWorkshop(workshop, date)}
+                          >
+                            Book Workshop
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </article>
+              );
+            })}
+          </div>
+        )}
       </div>
+
+      {selectedWorkshop && selectedDate && (
+        <WorkshopBookingModal
+          workshop={selectedWorkshop}
+          selectedDate={selectedDate}
+          selectedDateLabel={selectedDateLabel}
+          onClose={closeBookingModal}
+          onSuccess={(result) => {
+            setBookingSuccessMessage(
+              `Workshop booking completed. Booking ID: ${result.id}`
+            );
+            closeBookingModal();
+          }}
+        />
+      )}
     </div>
   );
 }
