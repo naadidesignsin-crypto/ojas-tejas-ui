@@ -9,6 +9,7 @@ import {
 import AdminWorkshops from "./AdminWorkshops.jsx";
 import AdminWorkshopBookings from "./AdminWorkshopBookings.jsx";
 import AdminContactInquiries from "./AdminContactInquiries.jsx";
+import AdminStudents from "./AdminStudents.jsx";
 import "../styles/admin.css";
 
 function AdminPage() {
@@ -180,7 +181,10 @@ function AdminPage() {
       <main className="admin-page">
         <div className="admin-login-card">
           <h1>🎨 Ojas Admin Login</h1>
-          <p>Login to manage demo links, artworks, workshops, and inquiries.</p>
+          <p>
+            Login to manage students, demo links, artworks, workshops, and
+            inquiries.
+          </p>
 
           <form onSubmit={handleLogin}>
             <input
@@ -216,8 +220,8 @@ function AdminPage() {
             <span className="admin-eyebrow">Admin Portal</span>
             <h1>📋 Ojas Dashboard</h1>
             <p>
-              Manage demo links, student artworks, workshops, workshop bookings,
-              and contact inquiries from one clean place.
+              Manage students, demo links, student artworks, workshops, workshop
+              bookings, and contact inquiries from one clean place.
             </p>
           </div>
 
@@ -237,6 +241,19 @@ function AdminPage() {
         {successMessage && <p className="admin-success">{successMessage}</p>}
 
         <div className="admin-summary-grid">
+          <button
+            className={
+              activeTab === "students"
+                ? "admin-summary-card active"
+                : "admin-summary-card"
+            }
+            onClick={() => setActiveTab("students")}
+          >
+            <span>👧</span>
+            <strong>{bookings.length}</strong>
+            <small>Students</small>
+          </button>
+
           <button
             className={
               activeTab === "demo"
@@ -325,6 +342,13 @@ function AdminPage() {
           </button>
 
           <button
+            className={activeTab === "students" ? "active" : ""}
+            onClick={() => setActiveTab("students")}
+          >
+            Students
+          </button>
+
+          <button
             className={activeTab === "demo" ? "active" : ""}
             onClick={() => setActiveTab("demo")}
           >
@@ -373,6 +397,18 @@ function AdminPage() {
             </div>
 
             <div className="admin-overview-grid">
+              <article>
+                <h3>👧 Students</h3>
+                <p>
+                  View all registered students, search parent details, check
+                  live link status, and export student data.
+                </p>
+
+                <button onClick={() => setActiveTab("students")}>
+                  View Students
+                </button>
+              </article>
+
               <article>
                 <h3>📨 Demo Live Links</h3>
                 <p>
@@ -432,6 +468,12 @@ function AdminPage() {
                 </button>
               </article>
             </div>
+          </section>
+        )}
+
+        {activeTab === "students" && (
+          <section className="admin-clean-panel">
+            <AdminStudents bookings={bookings} />
           </section>
         )}
 
