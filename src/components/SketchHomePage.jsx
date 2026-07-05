@@ -21,6 +21,7 @@ import WorkshopDatesModal from "./WorkshopDatesModal.jsx";
 import StudentGallery from "./StudentGallery.jsx";
 import TestimonialsFaq from "./TestimonialsFaq.jsx";
 import WhatsAppFloatingButton from "./WhatsAppFloatingButton.jsx";
+import ContactInquiryForm from "./ContactInquiryForm.jsx";
 import "../styles/sketch-home.css";
 import "../styles/student-portal.css";
 
@@ -456,7 +457,8 @@ function SketchHomePage() {
         <TestimonialsFaq onBookDemo={() => scrollTo("trial")} />
       </main>
 
-      <footer className="sketch-footer" id="contact">
+     <ContactInquiryForm onBookDemo={() => scrollTo("trial")} />
+      <footer className="sketch-footer">
         <div>
           <img src={logoFooter} alt="Ojas by Tejas" />
           <p>Trunkful of Colors, Brushful of Dreams</p>

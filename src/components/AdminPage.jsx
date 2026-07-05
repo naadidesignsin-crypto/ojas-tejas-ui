@@ -8,6 +8,7 @@ import {
 } from "../api/adminApi";
 import AdminWorkshops from "./AdminWorkshops.jsx";
 import AdminWorkshopBookings from "./AdminWorkshopBookings.jsx";
+import AdminContactInquiries from "./AdminContactInquiries.jsx";
 import "../styles/admin.css";
 
 function AdminPage() {
@@ -179,7 +180,7 @@ function AdminPage() {
       <main className="admin-page">
         <div className="admin-login-card">
           <h1>🎨 Ojas Admin Login</h1>
-          <p>Login to manage demo links, artworks, and workshops.</p>
+          <p>Login to manage demo links, artworks, workshops, and inquiries.</p>
 
           <form onSubmit={handleLogin}>
             <input
@@ -215,8 +216,8 @@ function AdminPage() {
             <span className="admin-eyebrow">Admin Portal</span>
             <h1>📋 Ojas Dashboard</h1>
             <p>
-              Manage demo links, student artworks, workshops, and workshop
-              bookings from one clean place.
+              Manage demo links, student artworks, workshops, workshop bookings,
+              and contact inquiries from one clean place.
             </p>
           </div>
 
@@ -300,6 +301,19 @@ function AdminPage() {
             <strong>View</strong>
             <small>Workshop bookings</small>
           </button>
+
+          <button
+            className={
+              activeTab === "contactInquiries"
+                ? "admin-summary-card active"
+                : "admin-summary-card"
+            }
+            onClick={() => setActiveTab("contactInquiries")}
+          >
+            <span>📩</span>
+            <strong>View</strong>
+            <small>Contact inquiries</small>
+          </button>
         </div>
 
         <div className="admin-tab-bar">
@@ -336,6 +350,13 @@ function AdminPage() {
             onClick={() => setActiveTab("workshopBookings")}
           >
             Workshop Bookings
+          </button>
+
+          <button
+            className={activeTab === "contactInquiries" ? "active" : ""}
+            onClick={() => setActiveTab("contactInquiries")}
+          >
+            Contact Inquiries
           </button>
         </div>
 
@@ -397,6 +418,17 @@ function AdminPage() {
 
                 <button onClick={() => setActiveTab("workshopBookings")}>
                   View Bookings
+                </button>
+              </article>
+
+              <article>
+                <h3>📩 Contact Inquiries</h3>
+                <p>
+                  View parent messages and update status after contacting them.
+                </p>
+
+                <button onClick={() => setActiveTab("contactInquiries")}>
+                  View Inquiries
                 </button>
               </article>
             </div>
@@ -570,6 +602,12 @@ function AdminPage() {
         {activeTab === "workshopBookings" && (
           <section className="admin-clean-panel">
             <AdminWorkshopBookings authToken={authToken} />
+          </section>
+        )}
+
+        {activeTab === "contactInquiries" && (
+          <section className="admin-clean-panel">
+            <AdminContactInquiries authToken={authToken} />
           </section>
         )}
       </div>
