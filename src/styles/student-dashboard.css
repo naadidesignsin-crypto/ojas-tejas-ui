@@ -323,3 +323,100 @@
     width: 100%;
   }
 }
+
+.student-workshop-panel {
+  margin-top: 28px;
+}
+
+.student-workshop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
+}
+
+.student-workshop-card {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.64);
+  color: #004aad;
+  box-shadow:
+    0 18px 42px rgba(0, 74, 173, 0.1),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.28);
+}
+
+.student-workshop-card h3 {
+  margin: 0;
+  color: #004aad;
+  font-size: 1.45rem;
+  font-weight: 950;
+}
+
+.student-workshop-card p {
+  margin: 0;
+  color: #004aad;
+  font-weight: 850;
+  line-height: 1.45;
+}
+
+.student-workshop-date {
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(180, 219, 255, 0.58);
+}
+
+.student-workshop-date strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #004aad;
+  font-size: 0.88rem;
+  font-weight: 950;
+}
+
+.student-workshop-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.student-workshop-bottom small {
+  color: #004aad;
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.student-workshop-status {
+  display: inline-flex;
+  width: fit-content;
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+.student-workshop-status.new {
+  background: #fff5d6;
+  color: #9a6500;
+}
+
+.student-workshop-status.confirmed {
+  background: #e9fff2;
+  color: #087536;
+}
+
+.student-workshop-status.cancelled {
+  background: #fff0f0;
+  color: #b42318;
+}
+
+.student-workshop-status.completed {
+  background: #eef4ff;
+  color: #004aad;
+}
+
+.student-dashboard-no-class.error {
+  background: #fff0f0;
+  color: #b42318;
+}

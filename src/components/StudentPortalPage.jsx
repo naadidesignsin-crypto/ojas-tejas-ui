@@ -1,17 +1,41 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/ojas-logo-header.png";
+import { getStudentWorkshopBookings } from "../api/studentApi";
 import "../styles/student-dashboard.css";
 
 function StudentPortalPage() {
   const [studentData, setStudentData] = useState(null);
+  const [workshopBookings, setWorkshopBookings] = useState([]);
+  const [workshopLoading, setWorkshopLoading] = useState(false);
+  const [workshopError, setWorkshopError] = useState("");
 
   useEffect(() => {
     const savedData = sessionStorage.getItem("studentPortalData");
 
     if (savedData) {
-      setStudentData(JSON.parse(savedData));
+      const parsedData = JSON.parse(savedData);
+      setStudentData(parsedData);
+      loadWorkshopBookings(parsedData);
     }
   }, []);
+
+  const loadWorkshopBookings = async (data) => {
+    if (!data?.email || !data?.phone) {
+      return;
+    }
+
+    setWorkshopLoading(true);
+    setWorkshopError("");
+
+    try {
+      const result = await getStudentWorkshopBookings(data.email, data.phone);
+      setWorkshopBookings(Array.isArray(result) ? result : []);
+    } catch (error) {
+      setWorkshopError(error.message || "Unable to load workshop bookings.");
+    } finally {
+      setWorkshopLoading(false);
+    }
+  };
 
   const formatDateTime = (value) => {
     if (!value) {
@@ -34,6 +58,24 @@ function StudentPortalPage() {
   const handleLogout = () => {
     sessionStorage.removeItem("studentPortalData");
     window.location.href = "/";
+  };
+
+  const getStatusClass = (status) => {
+    const value = (status || "NEW").toLowerCase();
+
+    if (value === "confirmed") {
+      return "confirmed";
+    }
+
+    if (value === "cancelled") {
+      return "cancelled";
+    }
+
+    if (value === "completed") {
+      return "completed";
+    }
+
+    return "new";
   };
 
   if (!studentData) {
@@ -68,8 +110,8 @@ function StudentPortalPage() {
           <span>Student Portal</span>
           <h1>Hello {studentData.childName}</h1>
           <p>
-            Registered under {studentData.parentName}. You can see only the live
-            classes enabled for your account.
+            Registered under {studentData.parentName}. You can see your enabled
+            live classes and workshop bookings here.
           </p>
         </div>
 
@@ -92,9 +134,9 @@ function StudentPortalPage() {
         </article>
 
         <article>
-          <span>🎨</span>
-          <strong>{studentData.childName}</strong>
-          <p>Student name</p>
+          <span>🧑‍🎨</span>
+          <strong>{workshopBookings.length}</strong>
+          <p>Workshop bookings</p>
         </article>
       </section>
 
@@ -154,6 +196,92 @@ function StudentPortalPage() {
                 <button onClick={() => openLiveClass(liveClass.liveLink)}>
                   Join Class
                 </button>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="student-dashboard-panel student-workshop-panel">
+        <div className="student-dashboard-title">
+          <div>
+            <h2>My Workshop Bookings</h2>
+            <p>Track your workshop bookings and confirmation status.</p>
+          </div>
+
+          <span>{workshopBookings.length} bookings</span>
+        </div>
+
+        {workshopLoading && (
+          <div className="student-dashboard-no-class">
+            <h3>Loading workshop bookings...</h3>
+          </div>
+        )}
+
+        {workshopError && (
+          <div className="student-dashboard-no-class error">
+            <h3>Unable to load workshops</h3>
+            <p>{workshopError}</p>
+
+            <button onClick={() => loadWorkshopBookings(studentData)}>
+              Try Again
+            </button>
+          </div>
+        )}
+
+        {!workshopLoading && !workshopError && workshopBookings.length === 0 && (
+          <div className="student-dashboard-no-class">
+            <h3>No workshop bookings yet</h3>
+
+            <p>
+              You have not booked any workshop yet. Visit the home page and book
+              from the Art Workshops section.
+            </p>
+
+            <button onClick={() => (window.location.href = "/#programs")}>
+              View Workshops
+            </button>
+          </div>
+        )}
+
+        {!workshopLoading && !workshopError && workshopBookings.length > 0 && (
+          <div className="student-workshop-grid">
+            {workshopBookings.map((booking) => (
+              <article className="student-workshop-card" key={booking.id}>
+                <div className="student-live-top">
+                  <span>Workshop</span>
+                  <small>Booking #{booking.id}</small>
+                </div>
+
+                <h3>{booking.workshopTitle}</h3>
+
+                <p>
+                  Student: {booking.childName} | Age: {booking.childAge || "-"}
+                </p>
+
+                <div className="student-workshop-date">
+                  <strong>Date</strong>
+                  <p>{booking.selectedDateLabel}</p>
+                </div>
+
+                {booking.message && (
+                  <div className="student-dashboard-note">
+                    <strong>Your Message</strong>
+                    <p>{booking.message}</p>
+                  </div>
+                )}
+
+                <div className="student-workshop-bottom">
+                  <span
+                    className={`student-workshop-status ${getStatusClass(
+                      booking.status
+                    )}`}
+                  >
+                    {booking.status || "NEW"}
+                  </span>
+
+                  <small>{formatDateTime(booking.createdAt)}</small>
+                </div>
               </article>
             ))}
           </div>
