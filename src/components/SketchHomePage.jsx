@@ -48,7 +48,6 @@ function SketchHomePage() {
   const [loginSecret, setLoginSecret] = useState("");
   const [loginError, setLoginError] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
-  const [studentData, setStudentData] = useState(null);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -103,10 +102,16 @@ function SketchHomePage() {
   };
 
   const openLogin = () => {
-    const savedToken = localStorage.getItem("adminToken");
+    const savedAdminToken = localStorage.getItem("adminToken");
+    const savedStudentData = sessionStorage.getItem("studentPortalData");
 
-    if (savedToken) {
+    if (savedAdminToken) {
       window.location.href = "/admin";
+      return;
+    }
+
+    if (savedStudentData) {
+      window.location.href = "/student";
       return;
     }
 
@@ -120,7 +125,6 @@ function SketchHomePage() {
     setLoginSecret("");
     setLoginError("");
     setLoginLoading(false);
-    setStudentData(null);
   };
 
   const handleUnifiedLogin = async (event) => {
@@ -136,7 +140,6 @@ function SketchHomePage() {
 
     setLoginLoading(true);
     setLoginError("");
-    setStudentData(null);
 
     try {
       if (identity.includes("@")) {
@@ -153,42 +156,20 @@ function SketchHomePage() {
 
       await getAdminBookings(token);
 
+      sessionStorage.removeItem("studentPortalData");
       localStorage.setItem("adminToken", token);
+
       window.location.href = "/admin";
     } catch (error) {
       localStorage.removeItem("adminToken");
-      setStudentData(null);
+      sessionStorage.removeItem("studentPortalData");
+
       setLoginError(
         "Login failed. Use registered student email with phone, or valid admin username with password."
       );
     } finally {
       setLoginLoading(false);
     }
-  };
-
-  const formatDateTime = (value) => {
-    if (!value) {
-      return "Recently updated";
-    }
-
-    return new Date(value).toLocaleString("en-IN", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-  };
-
-  const openLiveClass = (link) => {
-    window.open(link, "_blank", "noopener,noreferrer");
-  };
-
-  const resetStudentLogin = () => {
-    setStudentData(null);
-    setLoginIdentity("");
-    setLoginSecret("");
-    setLoginError("");
   };
 
   return (
@@ -511,138 +492,41 @@ function SketchHomePage() {
 
             <span className="landing-login-badge">🔐 Portal Access</span>
 
-            {!studentData && (
-              <>
-                <h2>Login</h2>
+            <h2>Login</h2>
 
-                <p>
-                  Students can login using registered email and phone.
-                </p>
+            <p>
+              Students can login using registered email and phone. Admin can
+              login using username and password.
+            </p>
 
-                <div className="unified-login-panel">
-                  <form onSubmit={handleUnifiedLogin} className="unified-login-form">
-                    <input
-                      type="text"
-                      placeholder="Email or username"
-                      value={loginIdentity}
-                      onChange={(event) => setLoginIdentity(event.target.value)}
-                    />
+            <div className="unified-login-panel">
+              <form
+                onSubmit={handleUnifiedLogin}
+                className="unified-login-form"
+              >
+                <input
+                  type="text"
+                  placeholder="Email or admin username"
+                  value={loginIdentity}
+                  onChange={(event) => setLoginIdentity(event.target.value)}
+                />
 
-                    <input
-                      type="password"
-                      placeholder="Password"
-                      value={loginSecret}
-                      onChange={(event) => setLoginSecret(event.target.value)}
-                    />
+                <input
+                  type="password"
+                  placeholder="Phone or password"
+                  value={loginSecret}
+                  onChange={(event) => setLoginSecret(event.target.value)}
+                />
 
-                    <button type="submit" disabled={loginLoading}>
-                      {loginLoading ? "Checking..." : "Login"}
-                    </button>
-                  </form>
-
-                 {/*  <p className="unified-login-helper">
-                    Student example: parent email + phone number. Admin example:
-                    admin username + password.
-                  </p> */}
-
-                  {loginError && (
-                    <p className="landing-login-error">{loginError}</p>
-                  )}
-                </div>
-              </>
-            )}
-
-            {studentData && (
-              <div className="student-portal-panel">
-                <div className="student-portal-welcome">
-                  <span>🎨 Student Portal</span>
-
-                  <h3>Hello {studentData.childName}</h3>
-
-                  <p>
-                    Registered under {studentData.parentName}. You can see only
-                    the live classes enabled for your account.
-                  </p>
-                </div>
-
-                <div className="student-portal-stats">
-                  <article>
-                    <strong>{studentData.registeredBookings}</strong>
-                    <span>Registered bookings</span>
-                  </article>
-
-                  <article>
-                    <strong>{studentData.enabledLiveClasses}</strong>
-                    <span>Live classes enabled</span>
-                  </article>
-                </div>
-
-                {studentData.liveClasses.length === 0 ? (
-                  <div className="student-empty-live">
-                    <h4>No live class enabled yet</h4>
-
-                    <p>
-                      Your registration is found, but admin has not enabled a
-                      live class link yet. Please check again later.
-                    </p>
-
-                    <button
-                      onClick={() => {
-                        closeLogin();
-                        scrollTo("trial");
-                      }}
-                    >
-                      Book another demo
-                    </button>
-                  </div>
-                ) : (
-                  <div className="student-live-list">
-                    {studentData.liveClasses.map((liveClass) => (
-                      <article
-                        className="student-live-card"
-                        key={liveClass.bookingId}
-                      >
-                        <div>
-                          <span className="student-live-badge">
-                            Live Class
-                          </span>
-
-                          <h4>{liveClass.preferredClass}</h4>
-
-                          <p>
-                            Student: {liveClass.childName} | Age:{" "}
-                            {liveClass.childAge || "-"}
-                          </p>
-
-                          {liveClass.note && (
-                            <p className="student-live-note">
-                              Note: {liveClass.note}
-                            </p>
-                          )}
-
-                          <small>
-                            Enabled on {formatDateTime(liveClass.sentAt)}
-                          </small>
-                        </div>
-
-                        <button
-                          onClick={() => openLiveClass(liveClass.liveLink)}
-                        >
-                          Join Class
-                        </button>
-                      </article>
-                    ))}
-                  </div>
-                )}
-
-                <button
-                  className="student-login-again-btn"
-                  onClick={resetStudentLogin}
-                >
-                  Login with another account
+                <button type="submit" disabled={loginLoading}>
+                  {loginLoading ? "Checking..." : "Login"}
                 </button>
-              </div>
-            )}
+              </form>
+
+              {loginError && (
+                <p className="landing-login-error">{loginError}</p>
+              )}
+            </div>
           </div>
         </div>
       )}
