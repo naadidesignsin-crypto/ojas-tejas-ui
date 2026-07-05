@@ -19,6 +19,7 @@ import { studentLogin } from "../api/studentApi";
 import ActivityDrawingModal from "./ActivityDrawingModal.jsx";
 import WorkshopDatesModal from "./WorkshopDatesModal.jsx";
 import StudentGallery from "./StudentGallery.jsx";
+import TestimonialsFaq from "./TestimonialsFaq.jsx";
 import "../styles/sketch-home.css";
 import "../styles/student-portal.css";
 
@@ -203,7 +204,7 @@ function SketchHomePage() {
             Gallery
           </button>
 
-          <button onClick={() => scrollTo("different")}>About</button>
+          <button onClick={() => scrollTo("faq")}>FAQ</button>
 
           <button onClick={() => scrollTo("contact")}>Contact</button>
 
@@ -451,6 +452,7 @@ function SketchHomePage() {
           </p>
         </section> */}
         <StudentGallery />
+        <TestimonialsFaq onBookDemo={() => scrollTo("trial")} />
       </main>
 
       <footer className="sketch-footer" id="contact">
