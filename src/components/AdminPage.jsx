@@ -106,6 +106,12 @@ function AdminPage() {
     window.location.href = "/";
   };
 
+  const handleRefresh = async () => {
+    if (authToken) {
+      await loadBookings(authToken);
+    }
+  };
+
   const handleSendLink = async (booking) => {
     const liveLink = bookingLinks[booking.id] || "";
     const note = bookingNotes[booking.id] || "";
@@ -129,8 +135,8 @@ function AdminPage() {
 
       setSuccessMessage(
         booking.liveLinkSent
-          ? `Live link updated and sent to ${booking.parentName} at ${booking.email}`
-          : `Live link sent successfully to ${booking.parentName} at ${booking.email}`
+          ? `Live link updated and sent to ${booking.parentName}`
+          : `Live link sent successfully to ${booking.parentName}`
       );
 
       await loadBookings(authToken);
@@ -153,19 +159,19 @@ function AdminPage() {
 
       await loadActivitySubmissions(authToken);
     } catch (err) {
-      setError(err.message || "Unable to approve artwork");
+      setError(err.message || "Unable to approve artwork.");
     } finally {
       setApprovingId(null);
     }
   };
 
-  const handleRefresh = async () => {
-    if (authToken) {
-      await loadBookings(authToken);
-    }
-  };
+  const totalSentLinks = bookings.filter(
+    (booking) => booking.liveLinkSent
+  ).length;
 
-  const totalSentLinks = bookings.filter((booking) => booking.liveLinkSent).length;
+  const totalPendingLinks = bookings.filter(
+    (booking) => !booking.liveLinkSent
+  ).length;
 
   if (!authToken) {
     return (
@@ -207,7 +213,10 @@ function AdminPage() {
           <div>
             <span className="admin-eyebrow">Admin Portal</span>
             <h1>📋 Ojas Dashboard</h1>
-            <p>Manage bookings, live links, artworks, and workshops clearly.</p>
+            <p>
+              Manage demo links, student artworks, and workshops from one clean
+              place.
+            </p>
           </div>
 
           <div className="admin-header-actions">
@@ -227,25 +236,37 @@ function AdminPage() {
 
         <div className="admin-summary-grid">
           <button
-            className={activeTab === "demo" ? "admin-summary-card active" : "admin-summary-card"}
+            className={
+              activeTab === "demo"
+                ? "admin-summary-card active"
+                : "admin-summary-card"
+            }
             onClick={() => setActiveTab("demo")}
           >
             <span>📨</span>
             <strong>{bookings.length}</strong>
-            <small>Demo bookings</small>
+            <small>Total demo bookings</small>
           </button>
 
           <button
-            className={activeTab === "links" ? "admin-summary-card active" : "admin-summary-card"}
-            onClick={() => setActiveTab("links")}
+            className={
+              activeTab === "demo"
+                ? "admin-summary-card active"
+                : "admin-summary-card"
+            }
+            onClick={() => setActiveTab("demo")}
           >
             <span>🔗</span>
             <strong>{totalSentLinks}</strong>
-            <small>Links sent</small>
+            <small>Live links sent</small>
           </button>
 
           <button
-            className={activeTab === "artworks" ? "admin-summary-card active" : "admin-summary-card"}
+            className={
+              activeTab === "artworks"
+                ? "admin-summary-card active"
+                : "admin-summary-card"
+            }
             onClick={() => setActiveTab("artworks")}
           >
             <span>🎨</span>
@@ -254,12 +275,16 @@ function AdminPage() {
           </button>
 
           <button
-            className={activeTab === "workshops" ? "admin-summary-card active" : "admin-summary-card"}
+            className={
+              activeTab === "workshops"
+                ? "admin-summary-card active"
+                : "admin-summary-card"
+            }
             onClick={() => setActiveTab("workshops")}
           >
             <span>🧑‍🏫</span>
             <strong>+</strong>
-            <small>Workshops</small>
+            <small>Manage workshops</small>
           </button>
         </div>
 
@@ -272,7 +297,7 @@ function AdminPage() {
           </button>
 
           <button
-            className={activeTab === "demo" || activeTab === "links" ? "active" : ""}
+            className={activeTab === "demo" ? "active" : ""}
             onClick={() => setActiveTab("demo")}
           >
             Demo Live Links
@@ -298,7 +323,10 @@ function AdminPage() {
             <div className="admin-panel-title">
               <div>
                 <h2>Dashboard Overview</h2>
-                <p>Select a section above to manage only that area.</p>
+                <p>
+                  Select one section. Each section opens separately, so admin
+                  will not get confused.
+                </p>
               </div>
             </div>
 
@@ -306,9 +334,10 @@ function AdminPage() {
               <article>
                 <h3>📨 Demo Live Links</h3>
                 <p>
-                  Add or update individual live class links for each student
-                  booking.
+                  Add or update Meet, Zoom, YouTube, or live class links for
+                  each registered student.
                 </p>
+
                 <button onClick={() => setActiveTab("demo")}>
                   Open Demo Links
                 </button>
@@ -317,9 +346,10 @@ function AdminPage() {
               <article>
                 <h3>🎨 Student Artworks</h3>
                 <p>
-                  Review student submitted artworks and approve selected ones
-                  for gallery.
+                  Review student submitted drawings and approve selected ones
+                  for the public gallery.
                 </p>
+
                 <button onClick={() => setActiveTab("artworks")}>
                   Review Artworks
                 </button>
@@ -328,9 +358,10 @@ function AdminPage() {
               <article>
                 <h3>🧑‍🏫 Workshops</h3>
                 <p>
-                  Create workshops, add dates, publish, and update workshop
-                  details.
+                  Create workshops, update details, add dates, and publish or
+                  unpublish workshops.
                 </p>
+
                 <button onClick={() => setActiveTab("workshops")}>
                   Manage Workshops
                 </button>
@@ -339,18 +370,18 @@ function AdminPage() {
           </section>
         )}
 
-        {(activeTab === "demo" || activeTab === "links") && (
+        {activeTab === "demo" && (
           <section className="admin-clean-panel">
             <div className="admin-panel-title">
               <div>
                 <h2>📨 Demo Bookings & Live Class Links</h2>
                 <p>
-                  Add the Meet / Zoom / YouTube link for each booking. Once
-                  sent, the same booking row will be updated.
+                  Add the live class link for each student. Once sent, the same
+                  row will be updated. No duplicate booking is created.
                 </p>
               </div>
 
-              <span>{bookings.length} bookings</span>
+              <span>{totalPendingLinks} pending</span>
             </div>
 
             <div className="admin-table-wrapper">
@@ -396,7 +427,7 @@ function AdminPage() {
                         <input
                           className="admin-row-link-input"
                           type="url"
-                          placeholder="Paste Meet / Zoom link"
+                          placeholder="Paste live class link"
                           value={bookingLinks[booking.id] || ""}
                           onChange={(event) =>
                             setBookingLinks((previous) => ({
@@ -424,7 +455,9 @@ function AdminPage() {
 
                       <td>
                         {booking.liveLinkSent ? (
-                          <span className="admin-link-status sent">Sent</span>
+                          <span className="admin-link-status sent">
+                            Sent
+                          </span>
                         ) : (
                           <span className="admin-link-status not-sent">
                             Not sent
@@ -458,7 +491,9 @@ function AdminPage() {
             <div className="admin-panel-title">
               <div>
                 <h2>🎨 Student Activity Submissions</h2>
-                <p>Review student drawings and post selected ones to gallery.</p>
+                <p>
+                  Review student drawings and post approved artworks to gallery.
+                </p>
               </div>
 
               <span>{activitySubmissions.length} pending</span>
