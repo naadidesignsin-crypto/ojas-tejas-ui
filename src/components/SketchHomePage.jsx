@@ -35,6 +35,21 @@ const initialForm = {
   message: ""
 };
 
+const getSavedStudentName = () => {
+  const savedStudentData = sessionStorage.getItem("studentPortalData");
+
+  if (!savedStudentData) {
+    return "";
+  }
+
+  try {
+    const parsedData = JSON.parse(savedStudentData);
+    return parsedData.childName || parsedData.parentName || "Student";
+  } catch {
+    return "";
+  }
+};
+
 function SketchHomePage() {
   const videoRef = useRef(null);
 
@@ -52,6 +67,20 @@ function SketchHomePage() {
   const [loginSecret, setLoginSecret] = useState("");
   const [loginError, setLoginError] = useState("");
   const [loginLoading, setLoginLoading] = useState(false);
+
+  const [studentLoggedIn, setStudentLoggedIn] = useState(
+    () => !!sessionStorage.getItem("studentPortalData")
+  );
+
+  const [adminLoggedIn, setAdminLoggedIn] = useState(
+    () => !!localStorage.getItem("adminToken")
+  );
+
+  const [loggedStudentName, setLoggedStudentName] = useState(
+    () => getSavedStudentName()
+  );
+
+  const [portalMessage, setPortalMessage] = useState("");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -131,6 +160,22 @@ function SketchHomePage() {
     setLoginLoading(false);
   };
 
+  const handlePortalLogout = () => {
+    localStorage.removeItem("adminToken");
+    sessionStorage.removeItem("studentPortalData");
+
+    setStudentLoggedIn(false);
+    setAdminLoggedIn(false);
+    setLoggedStudentName("");
+    setPortalMessage("Logged out successfully.");
+
+    setShowLoginModal(false);
+    setLoginIdentity("");
+    setLoginSecret("");
+    setLoginError("");
+    setLoginLoading(false);
+  };
+
   const handleUnifiedLogin = async (event) => {
     event.preventDefault();
 
@@ -149,10 +194,23 @@ function SketchHomePage() {
       if (identity.includes("@")) {
         const data = await studentLogin(identity, secret);
 
+        const studentName = data.childName || data.parentName || "Student";
+
         localStorage.removeItem("adminToken");
         sessionStorage.setItem("studentPortalData", JSON.stringify(data));
 
-        window.location.href = "/student";
+        setStudentLoggedIn(true);
+        setAdminLoggedIn(false);
+        setLoggedStudentName(studentName);
+        setPortalMessage(
+          `Login successful. Hi ${studentName}, click Dashboard to view your live classes.`
+        );
+
+        setShowLoginModal(false);
+        setLoginIdentity("");
+        setLoginSecret("");
+        setLoginError("");
+
         return;
       }
 
@@ -163,10 +221,20 @@ function SketchHomePage() {
       sessionStorage.removeItem("studentPortalData");
       localStorage.setItem("adminToken", token);
 
+      setStudentLoggedIn(false);
+      setAdminLoggedIn(true);
+      setLoggedStudentName("");
+      setPortalMessage("");
+
       window.location.href = "/admin";
     } catch (error) {
       localStorage.removeItem("adminToken");
       sessionStorage.removeItem("studentPortalData");
+
+      setStudentLoggedIn(false);
+      setAdminLoggedIn(false);
+      setLoggedStudentName("");
+      setPortalMessage("");
 
       setLoginError(
         "Login failed. Use registered student email with phone, or valid admin username with password."
@@ -181,10 +249,30 @@ function SketchHomePage() {
       <div className="sketch-top-strip">
         <span>🎨 Trunkful of Colors, Brushful of Dreams</span>
 
-        <div>
+        <div className="sketch-top-right">
+          {studentLoggedIn && loggedStudentName && (
+            <span className="student-login-chip">
+              Logged in as {loggedStudentName}
+            </span>
+          )}
+
+          {adminLoggedIn && !studentLoggedIn && (
+            <span className="student-login-chip">Logged in as Admin</span>
+          )}
+
+          {(studentLoggedIn || adminLoggedIn) && (
+            <button
+              type="button"
+              className="top-logout-btn"
+              onClick={handlePortalLogout}
+            >
+              Logout
+            </button>
+          )}
+
+          {/* <span>●</span>
           <span>●</span>
-          <span>●</span>
-          <span>●</span>
+          <span>●</span> */}
         </div>
       </div>
 
@@ -202,17 +290,19 @@ function SketchHomePage() {
 
           <button onClick={() => scrollTo("trial")}>Free Demo</button>
 
-          <button onClick={() => scrollTo("student-gallery")}>
-            Gallery
-          </button>
+          <button onClick={() => scrollTo("student-gallery")}>Gallery</button>
 
           <button onClick={() => scrollTo("faq")}>FAQ</button>
 
           <button onClick={() => scrollTo("contact")}>Contact</button>
 
-          <button className="admin-nav-btn" onClick={openLogin}>
-            Login
-          </button>
+
+            {!studentLoggedIn && !adminLoggedIn && (
+              <button className="admin-nav-btn" onClick={openLogin}>
+                Login
+              </button>
+            )}
+
         </nav>
       </header>
 
@@ -221,7 +311,13 @@ function SketchHomePage() {
           <div className="trial-card" id="trial">
             <div className="hero-title-wrap">
               <h1>
-                <span>Book a free Trial Session</span>
+                <span>
+                  {studentLoggedIn
+                    ? "Student Dashboard Access"
+                    : adminLoggedIn
+                    ? "Admin Dashboard Access"
+                    : "Book a free Trial Session"}
+                </span>
               </h1>
 
               <div className="hero-art-burst" aria-hidden="true">
@@ -233,79 +329,153 @@ function SketchHomePage() {
               </div>
             </div>
 
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                name="parentName"
-                placeholder="Parent full name"
-                value={formData.parentName}
-                onChange={handleChange}
-                required
-              />
+            {studentLoggedIn ? (
+              <div className="student-logged-card">
+                <span className="student-logged-badge">✅ Logged in</span>
 
-              <input
-                type="text"
-                name="childName"
-                placeholder="Student name"
-                value={formData.childName}
-                onChange={handleChange}
-                required
-              />
+                <h2>Hi {loggedStudentName || "Student"}</h2>
 
-              <div className="trial-row">
-                <input
-                  type="number"
-                  name="childAge"
-                  placeholder="Age"
-                  min="3"
-                  max="18"
-                  value={formData.childAge}
-                  onChange={handleChange}
-                  required
-                />
+                <p>
+                  You are already logged in. Open your dashboard to view live
+                  classes, enabled links, and student details.
+                </p>
 
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                />
+                {portalMessage && (
+                  <p className="trial-success">{portalMessage}</p>
+                )}
+
+                <div className="student-logged-actions">
+                  <button
+                    type="button"
+                    onClick={() => (window.location.href = "/student")}
+                  >
+                    Open Dashboard
+                  </button>
+
+                  <button
+                    type="button"
+                    className="student-logout-inline"
+                    onClick={handlePortalLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
               </div>
+            ) : adminLoggedIn ? (
+              <div className="student-logged-card">
+                <span className="student-logged-badge">
+                  🔐 Admin logged in
+                </span>
 
-              <input
-                type="email"
-                name="email"
-                placeholder="Email address"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
+                <h2>Admin Portal</h2>
 
-              <select
-                name="preferredClass"
-                value={formData.preferredClass}
-                onChange={handleChange}
-              >
-                <option value="Free Trial Session">Free Trial Session</option>
+                <p>
+                  You are logged in as admin. Open the dashboard to manage
+                  students, workshops, bookings, artworks, and inquiries.
+                </p>
 
-                <option value="Live Online Art Classes">
-                  Live Online Art Classes
-                </option>
+                <div className="student-logged-actions">
+                  <button
+                    type="button"
+                    onClick={() => (window.location.href = "/admin")}
+                  >
+                    Open Admin Dashboard
+                  </button>
 
-                <option value="Summer Art Camp">Summer Art Camp</option>
+                  <button
+                    type="button"
+                    className="student-logout-inline"
+                    onClick={handlePortalLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                {portalMessage && (
+                  <p className="trial-success">{portalMessage}</p>
+                )}
 
-                <option value="Art Workshops">Art Workshops</option>
-              </select>
+                <form onSubmit={handleSubmit}>
+                  <input
+                    type="text"
+                    name="parentName"
+                    placeholder="Parent full name"
+                    value={formData.parentName}
+                    onChange={handleChange}
+                    required
+                  />
 
-              <button type="submit" disabled={loading}>
-                {loading ? "Registering..." : "Register now"}
-              </button>
+                  <input
+                    type="text"
+                    name="childName"
+                    placeholder="Student name"
+                    value={formData.childName}
+                    onChange={handleChange}
+                    required
+                  />
 
-              {formMessage && <p className="trial-success">{formMessage}</p>}
-              {formError && <p className="trial-error">{formError}</p>}
-            </form>
+                  <div className="trial-row">
+                    <input
+                      type="number"
+                      name="childAge"
+                      placeholder="Age"
+                      min="3"
+                      max="18"
+                      value={formData.childAge}
+                      onChange={handleChange}
+                      required
+                    />
+
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder="Phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email address"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+
+                  <select
+                    name="preferredClass"
+                    value={formData.preferredClass}
+                    onChange={handleChange}
+                  >
+                    <option value="Free Trial Session">
+                      Free Trial Session
+                    </option>
+
+                    <option value="Live Online Art Classes">
+                      Live Online Art Classes
+                    </option>
+
+                    <option value="Summer Art Camp">Summer Art Camp</option>
+
+                    <option value="Art Workshops">Art Workshops</option>
+                  </select>
+
+                  <button type="submit" disabled={loading}>
+                    {loading ? "Registering..." : "Register now"}
+                  </button>
+
+                  {formMessage && (
+                    <p className="trial-success">{formMessage}</p>
+                  )}
+                  {formError && <p className="trial-error">{formError}</p>}
+                </form>
+              </>
+            )}
 
             <div className="paint-tools realistic-tools">
               <img src={colorImage} alt="Color palette and brush" />
@@ -445,19 +615,13 @@ function SketchHomePage() {
           </div>
         </section>
 
-        {/* <section className="student-gallery-placeholder" id="student-gallery">
-          <h2>Student Art Gallery</h2>
-
-          <p>
-            Drawings submitted through activities will appear here after admin
-            approval.
-          </p>
-        </section> */}
         <StudentGallery />
+
         <TestimonialsFaq onBookDemo={() => scrollTo("trial")} />
+
+        <ContactInquiryForm onBookDemo={() => scrollTo("trial")} />
       </main>
 
-     <ContactInquiryForm onBookDemo={() => scrollTo("trial")} />
       <footer className="sketch-footer">
         <div>
           <img src={logoFooter} alt="Ojas by Tejas" />
@@ -537,7 +701,8 @@ function SketchHomePage() {
           </div>
         </div>
       )}
-     <WhatsAppFloatingButton />
+
+      <WhatsAppFloatingButton />
     </div>
   );
 }

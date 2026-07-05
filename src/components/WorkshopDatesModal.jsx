@@ -64,6 +64,16 @@ function WorkshopDatesModal({ onClose, onBookDemo }) {
     return [];
   };
 
+  const getAvailableSeats = (date) => {
+    const value = date.availableSeats ?? date.seats ?? null;
+
+    if (value === null || value === undefined || value === "") {
+      return null;
+    }
+
+    return Number(value);
+  };
+
   const formatDateTime = (value) => {
     if (!value) {
       return "";
@@ -111,16 +121,48 @@ function WorkshopDatesModal({ onClose, onBookDemo }) {
   };
 
   const handleBookWorkshop = (workshop, date) => {
+    const availableSeats = getAvailableSeats(date);
+    const workshopFull = availableSeats !== null && availableSeats <= 0;
+
+    if (workshopFull) {
+      setBookingSuccessMessage("");
+      setError("This workshop date is full. Please select another date.");
+      return;
+    }
+
     setSelectedWorkshop(workshop);
     setSelectedDate(date);
     setSelectedDateLabel(getDateLabel(date));
     setBookingSuccessMessage("");
+    setError("");
   };
 
   const closeBookingModal = () => {
     setSelectedWorkshop(null);
     setSelectedDate(null);
     setSelectedDateLabel("");
+  };
+
+  const handleBookingSuccess = async (result) => {
+    if (result.alreadyBooked) {
+      setBookingSuccessMessage(
+        `You are already registered for this workshop. Booking ID: ${result.id}`
+      );
+    } else {
+      const remainingSeatText =
+        result.remainingSeats !== null &&
+        result.remainingSeats !== undefined
+          ? ` Remaining seats: ${result.remainingSeats}`
+          : "";
+
+      setBookingSuccessMessage(
+        `Workshop booking completed. Booking ID: ${result.id}.${remainingSeatText}`
+      );
+    }
+
+    closeBookingModal();
+
+    await loadWorkshops();
   };
 
   return (
@@ -194,29 +236,34 @@ function WorkshopDatesModal({ onClose, onBookDemo }) {
                     </div>
                   ) : (
                     <div className="workshop-date-list">
-                      {dates.map((date) => (
-                        <div className="workshop-date-row" key={date.id}>
-                          <div>
-                            <strong>{getDateLabel(date)}</strong>
+                      {dates.map((date) => {
+                        const availableSeats = getAvailableSeats(date);
+                        const workshopFull =
+                          availableSeats !== null && availableSeats <= 0;
 
-                            {date.seats && (
-                              <small>{date.seats} seats available</small>
-                            )}
+                        return (
+                          <div className="workshop-date-row" key={date.id}>
+                            <div>
+                              <strong>{getDateLabel(date)}</strong>
 
-                            {date.availableSeats && (
-                              <small>
-                                {date.availableSeats} seats available
-                              </small>
-                            )}
+                              {availableSeats !== null && (
+                                <small>
+                                  {workshopFull
+                                    ? "Full"
+                                    : `${availableSeats} seats available`}
+                                </small>
+                              )}
+                            </div>
+
+                            <button
+                              onClick={() => handleBookWorkshop(workshop, date)}
+                              disabled={workshopFull}
+                            >
+                              {workshopFull ? "Full" : "Book Workshop"}
+                            </button>
                           </div>
-
-                          <button
-                            onClick={() => handleBookWorkshop(workshop, date)}
-                          >
-                            Book Workshop
-                          </button>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </article>
@@ -232,12 +279,7 @@ function WorkshopDatesModal({ onClose, onBookDemo }) {
           selectedDate={selectedDate}
           selectedDateLabel={selectedDateLabel}
           onClose={closeBookingModal}
-          onSuccess={(result) => {
-            setBookingSuccessMessage(
-              `Workshop booking completed. Booking ID: ${result.id}`
-            );
-            closeBookingModal();
-          }}
+          onSuccess={handleBookingSuccess}
         />
       )}
     </div>
