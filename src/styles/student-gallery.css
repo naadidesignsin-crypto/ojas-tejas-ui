@@ -1,0 +1,273 @@
+.real-student-gallery {
+  position: relative;
+  padding: clamp(60px, 6vw, 90px) clamp(28px, 6vw, 88px);
+  background:
+    radial-gradient(circle at 12% 14%, rgba(255, 255, 255, 0.48), transparent 28%),
+    linear-gradient(135deg, #fff3c9 0%, #b4dbff 52%, #ffd2cd 100%);
+  overflow: hidden;
+}
+
+.gallery-title-wrap {
+  max-width: 840px;
+  margin: 0 auto 46px;
+  text-align: center;
+  color: #004aad;
+}
+
+.gallery-title-wrap span {
+  display: inline-flex;
+  margin-bottom: 14px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+  color: #004aad;
+  font-size: 0.9rem;
+  font-weight: 950;
+}
+
+.gallery-title-wrap h2 {
+  margin: 0;
+  color: #004aad;
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  line-height: 1;
+  font-weight: 950;
+}
+
+.gallery-title-wrap p {
+  max-width: 660px;
+  margin: 16px auto 0;
+  color: #004aad;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 850;
+}
+
+.student-art-grid {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.student-art-card {
+  overflow: hidden;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow:
+    0 20px 46px rgba(0, 74, 173, 0.12),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.28);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.student-art-card:hover {
+  transform: translateY(-6px) rotate(-0.5deg);
+  box-shadow:
+    0 28px 70px rgba(0, 74, 173, 0.16),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.32);
+}
+
+.student-art-image-btn {
+  width: 100%;
+  height: 250px;
+  padding: 0;
+  border: 0;
+  background: #ffffff;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.student-art-image-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 220ms ease;
+}
+
+.student-art-card:hover .student-art-image-btn img {
+  transform: scale(1.06);
+}
+
+.student-art-content {
+  padding: 20px;
+  color: #004aad;
+}
+
+.student-art-content span {
+  display: inline-flex;
+  margin-bottom: 10px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #e9fff2;
+  color: #087536;
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+.student-art-content h3 {
+  margin: 0;
+  color: #004aad;
+  font-size: 1.45rem;
+  line-height: 1.15;
+  font-weight: 950;
+}
+
+.student-art-content p {
+  margin: 9px 0 0;
+  color: #004aad;
+  font-weight: 850;
+}
+
+.student-art-content small {
+  display: block;
+  margin-top: 8px;
+  color: #004aad;
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.gallery-status-card,
+.gallery-empty-card {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 34px;
+  border-radius: 30px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.58);
+  color: #004aad;
+  box-shadow:
+    0 18px 46px rgba(0, 74, 173, 0.1),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.28);
+}
+
+.gallery-status-card p,
+.gallery-empty-card p {
+  margin: 0;
+  color: #004aad;
+  font-weight: 850;
+}
+
+.gallery-empty-card div {
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+}
+
+.gallery-empty-card h3 {
+  margin: 0 0 10px;
+  color: #004aad;
+  font-size: 2rem;
+  font-weight: 950;
+}
+
+.gallery-error-card {
+  background: #fff0f0;
+  color: #b42318;
+}
+
+.gallery-error-card p {
+  color: #b42318;
+}
+
+.gallery-error-card button {
+  min-width: 130px;
+  min-height: 42px;
+  margin-top: 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #004aad;
+  color: #ffffff;
+  font-family: inherit;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.gallery-preview-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 31, 82, 0.55);
+  backdrop-filter: blur(10px);
+}
+
+.gallery-preview-card {
+  position: relative;
+  width: min(760px, 94vw);
+  max-height: 92vh;
+  overflow: auto;
+  border-radius: 32px;
+  background: #b4dbff;
+  box-shadow: 0 30px 90px rgba(0, 31, 82, 0.36);
+}
+
+.gallery-preview-card img {
+  width: 100%;
+  max-height: 68vh;
+  object-fit: contain;
+  display: block;
+  background: #ffffff;
+}
+
+.gallery-preview-card > div {
+  padding: 22px;
+  color: #004aad;
+}
+
+.gallery-preview-card span {
+  display: inline-flex;
+  margin-bottom: 8px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+  font-size: 0.85rem;
+  font-weight: 950;
+}
+
+.gallery-preview-card h3 {
+  margin: 0;
+  color: #004aad;
+  font-size: 2rem;
+  font-weight: 950;
+}
+
+.gallery-preview-card p {
+  margin: 8px 0 0;
+  color: #004aad;
+  font-weight: 850;
+}
+
+.gallery-preview-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: #ff6259;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 950;
+  cursor: pointer;
+  box-shadow: 5px 6px 0 rgba(0, 74, 173, 0.14);
+}
+
+@media (max-width: 1000px) {
+  .student-art-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .student-art-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .student-art-image-btn {
+    height: 230px;
+  }
+}

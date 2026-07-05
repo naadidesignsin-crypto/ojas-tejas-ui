@@ -23,12 +23,13 @@ export async function submitActivityDrawing(payload) {
 }
 
 export async function getApprovedActivityGallery() {
-  const response = await fetch(`${API_BASE_URL}/api/gallery/activities`);
+  const response = await fetch(`${API_BASE_URL}/api/gallery/activities`, {
+    method: "GET"
+  });
 
   if (!response.ok) {
-    throw new Error("Unable to load approved activity gallery");
+    throw new Error("Unable to load student gallery");
   }
 
   return response.json();
-
 }

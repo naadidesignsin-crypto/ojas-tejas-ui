@@ -18,6 +18,7 @@ import { createBasicAuthToken, getAdminBookings } from "../api/adminApi";
 import { studentLogin } from "../api/studentApi";
 import ActivityDrawingModal from "./ActivityDrawingModal.jsx";
 import WorkshopDatesModal from "./WorkshopDatesModal.jsx";
+import StudentGallery from "./StudentGallery.jsx";
 import "../styles/sketch-home.css";
 import "../styles/student-portal.css";
 
@@ -441,14 +442,15 @@ function SketchHomePage() {
           </div>
         </section>
 
-        <section className="student-gallery-placeholder" id="student-gallery">
+        {/* <section className="student-gallery-placeholder" id="student-gallery">
           <h2>Student Art Gallery</h2>
 
           <p>
             Drawings submitted through activities will appear here after admin
             approval.
           </p>
-        </section>
+        </section> */}
+        <StudentGallery />
       </main>
 
       <footer className="sketch-footer" id="contact">
