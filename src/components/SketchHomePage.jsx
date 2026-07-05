@@ -521,14 +521,14 @@ function SketchHomePage() {
                   <form onSubmit={handleUnifiedLogin} className="unified-login-form">
                     <input
                       type="text"
-                      placeholder="Email or Admin username"
+                      placeholder="Email or username"
                       value={loginIdentity}
                       onChange={(event) => setLoginIdentity(event.target.value)}
                     />
 
                     <input
                       type="password"
-                      placeholder="Phone or Admin password"
+                      placeholder="Password"
                       value={loginSecret}
                       onChange={(event) => setLoginSecret(event.target.value)}
                     />
