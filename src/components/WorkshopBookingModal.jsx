@@ -61,9 +61,15 @@ function WorkshopBookingModal({
 
       const result = await createWorkshopBooking(payload);
 
-      setSuccessMessage(
-        `Workshop booked successfully. Booking ID: ${result.id}`
-      );
+      if (result.alreadyBooked) {
+        setSuccessMessage(
+          `You are already registered for this workshop. Booking ID: ${result.id}`
+        );
+      } else {
+        setSuccessMessage(
+          `Workshop booked successfully. Booking ID: ${result.id}. Remaining seats: ${result.remainingSeats}`
+        );
+      }
 
       setFormData(initialBookingForm);
 
