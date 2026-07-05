@@ -40,3 +40,29 @@ export async function studentLogin(email, phone) {
 
   return data;
 }
+
+export async function getStudentWorkshopBookings(email, phone) {
+  const response = await fetch(
+    `${API_BASE_URL}/api/student/workshop-bookings`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email,
+        phone
+      })
+    }
+  );
+
+  const data = await readResponse(response);
+
+  if (!response.ok) {
+    throw new Error(
+      buildError(data, "Unable to load student workshop bookings.")
+    );
+  }
+
+  return data;
+}
