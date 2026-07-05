@@ -20,6 +20,7 @@ import ActivityDrawingModal from "./ActivityDrawingModal.jsx";
 import WorkshopDatesModal from "./WorkshopDatesModal.jsx";
 import StudentGallery from "./StudentGallery.jsx";
 import TestimonialsFaq from "./TestimonialsFaq.jsx";
+import WhatsAppFloatingButton from "./WhatsAppFloatingButton.jsx";
 import "../styles/sketch-home.css";
 import "../styles/student-portal.css";
 
@@ -534,6 +535,7 @@ function SketchHomePage() {
           </div>
         </div>
       )}
+     <WhatsAppFloatingButton />
     </div>
   );
 }
