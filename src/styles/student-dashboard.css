@@ -1,0 +1,325 @@
+.student-dashboard-page {
+  min-height: 100vh;
+  padding: 34px;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(255, 255, 255, 0.6), transparent 28%),
+    linear-gradient(135deg, #b4dbff 0%, #fff3c9 48%, #ffd2cd 100%);
+  color: #004aad;
+  font-family: "Comic Sans MS", "Trebuchet MS", system-ui, sans-serif;
+}
+
+.student-dashboard-header {
+  max-width: 1220px;
+  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 24px;
+  align-items: center;
+  padding: 24px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 20px 50px rgba(0, 74, 173, 0.12),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.28);
+}
+
+.student-dashboard-logo {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.student-dashboard-logo img {
+  width: 135px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.student-dashboard-header span {
+  display: inline-flex;
+  margin-bottom: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(0, 74, 173, 0.08);
+  color: #004aad;
+  font-size: 0.85rem;
+  font-weight: 950;
+}
+
+.student-dashboard-header h1 {
+  margin: 0;
+  color: #004aad;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 950;
+  line-height: 1;
+}
+
+.student-dashboard-header p {
+  margin: 10px 0 0;
+  color: #004aad;
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.45;
+}
+
+.student-dashboard-logout {
+  min-width: 110px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: #ff6259;
+  color: #ffffff;
+  font-family: inherit;
+  font-weight: 950;
+  cursor: pointer;
+  box-shadow: 5px 6px 0 rgba(0, 74, 173, 0.14);
+}
+
+.student-dashboard-summary {
+  max-width: 1220px;
+  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.student-dashboard-summary article {
+  min-height: 132px;
+  padding: 22px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.56);
+  box-shadow:
+    0 16px 38px rgba(0, 74, 173, 0.09),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.28);
+}
+
+.student-dashboard-summary span {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 2rem;
+}
+
+.student-dashboard-summary strong {
+  display: block;
+  color: #004aad;
+  font-size: 2.1rem;
+  line-height: 1;
+  font-weight: 950;
+  word-break: break-word;
+}
+
+.student-dashboard-summary p {
+  margin: 8px 0 0;
+  color: #004aad;
+  font-size: 0.95rem;
+  font-weight: 900;
+}
+
+.student-dashboard-panel,
+.student-dashboard-empty {
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 28px;
+  border-radius: 34px;
+  background: rgba(255, 255, 255, 0.48);
+  box-shadow:
+    0 22px 60px rgba(0, 74, 173, 0.1),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.28);
+}
+
+.student-dashboard-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.student-dashboard-title h2,
+.student-dashboard-empty h1 {
+  margin: 0;
+  color: #004aad;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 950;
+}
+
+.student-dashboard-title p,
+.student-dashboard-empty p {
+  margin: 8px 0 0;
+  color: #004aad;
+  font-weight: 850;
+}
+
+.student-dashboard-title > span {
+  flex: 0 0 auto;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: #004aad;
+  color: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 950;
+}
+
+.student-dashboard-live-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.student-dashboard-live-card {
+  padding: 22px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.22);
+}
+
+.student-live-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.student-live-top span {
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: #e9fff2;
+  color: #087536;
+  font-size: 0.8rem;
+  font-weight: 950;
+}
+
+.student-live-top small {
+  color: #004aad;
+  font-weight: 900;
+}
+
+.student-dashboard-live-card h3 {
+  margin: 0;
+  color: #004aad;
+  font-size: 1.6rem;
+  font-weight: 950;
+}
+
+.student-dashboard-live-card > p {
+  margin: 10px 0;
+  color: #004aad;
+  font-weight: 850;
+}
+
+.student-dashboard-note {
+  margin: 16px 0;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(0, 74, 173, 0.08);
+}
+
+.student-dashboard-note strong {
+  display: block;
+  color: #004aad;
+  font-size: 0.88rem;
+  font-weight: 950;
+}
+
+.student-dashboard-note p {
+  margin: 6px 0 0;
+  color: #004aad;
+  font-weight: 850;
+}
+
+.student-dashboard-time {
+  display: block;
+  margin-bottom: 18px;
+  color: #004aad;
+  font-weight: 850;
+}
+
+.student-dashboard-live-card button,
+.student-dashboard-no-class button,
+.student-dashboard-empty button {
+  width: 160px;
+  height: 62px;
+  border: 0;
+  background:
+    url("../assets/btn-scribble-transparent.png")
+    center / 100% 100%
+    no-repeat;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.98rem;
+  font-weight: 950;
+  cursor: pointer;
+  filter: drop-shadow(7px 7px 0 rgba(0, 74, 173, 0.13));
+}
+
+.student-dashboard-no-class {
+  padding: 26px;
+  border-radius: 26px;
+  background: #fff5d6;
+  color: #9a6500;
+}
+
+.student-dashboard-no-class h3 {
+  margin: 0 0 8px;
+  font-size: 1.5rem;
+  font-weight: 950;
+}
+
+.student-dashboard-no-class p {
+  max-width: 640px;
+  margin: 0 0 18px;
+  font-weight: 850;
+  line-height: 1.45;
+}
+
+.student-dashboard-empty {
+  min-height: calc(100vh - 68px);
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.student-dashboard-empty img {
+  width: 150px;
+  height: auto;
+}
+
+@media (max-width: 900px) {
+  .student-dashboard-header {
+    grid-template-columns: 1fr;
+  }
+
+  .student-dashboard-summary,
+  .student-dashboard-live-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .student-dashboard-title {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 560px) {
+  .student-dashboard-page {
+    padding: 18px;
+  }
+
+  .student-dashboard-header,
+  .student-dashboard-panel,
+  .student-dashboard-empty {
+    padding: 20px;
+  }
+
+  .student-dashboard-logo img {
+    width: 115px;
+  }
+
+  .student-dashboard-live-card button,
+  .student-dashboard-no-class button,
+  .student-dashboard-empty button,
+  .student-dashboard-logout {
+    width: 100%;
+  }
+}

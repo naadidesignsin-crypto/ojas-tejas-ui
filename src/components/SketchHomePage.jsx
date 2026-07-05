@@ -141,8 +141,11 @@ function SketchHomePage() {
     try {
       if (identity.includes("@")) {
         const data = await studentLogin(identity, secret);
+
         localStorage.removeItem("adminToken");
-        setStudentData(data);
+        sessionStorage.setItem("studentPortalData", JSON.stringify(data));
+
+        window.location.href = "/student";
         return;
       }
 

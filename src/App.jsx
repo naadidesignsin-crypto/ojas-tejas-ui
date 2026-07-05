@@ -1,12 +1,17 @@
 import React from "react";
 import AdminPage from "./components/AdminPage.jsx";
+import StudentPortalPage from "./components/StudentPortalPage.jsx";
 import SketchHomePage from "./components/SketchHomePage.jsx";
 
 function App() {
-  const isAdminPage = window.location.pathname === "/admin";
+  const pathName = window.location.pathname;
 
-  if (isAdminPage) {
+  if (pathName === "/admin") {
     return <AdminPage />;
+  }
+
+  if (pathName === "/student") {
+    return <StudentPortalPage />;
   }
 
   return <SketchHomePage />;
