@@ -420,3 +420,111 @@
   background: #fff0f0;
   color: #b42318;
 }
+
+.student-attendance-panel {
+  margin-top: 28px;
+}
+
+.student-attendance-summary {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.student-attendance-summary article {
+  padding: 16px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.58);
+  color: #004aad;
+  text-align: center;
+  box-shadow:
+    0 14px 34px rgba(0, 74, 173, 0.08),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+}
+
+.student-attendance-summary strong {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 950;
+}
+
+.student-attendance-summary p {
+  margin: 6px 0 0;
+  font-size: 0.84rem;
+  font-weight: 850;
+}
+
+.student-attendance-list {
+  display: grid;
+  gap: 14px;
+}
+
+.student-attendance-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.62);
+  color: #004aad;
+  box-shadow:
+    0 14px 34px rgba(0, 74, 173, 0.08),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+}
+
+.student-attendance-card strong {
+  display: block;
+  color: #004aad;
+  font-size: 1rem;
+  font-weight: 950;
+}
+
+.student-attendance-card small {
+  display: block;
+  margin-top: 4px;
+  color: #004aad;
+  font-weight: 850;
+}
+
+.student-attendance-card p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #004aad;
+  font-weight: 850;
+}
+
+.student-attendance-status {
+  display: inline-flex;
+  width: fit-content;
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+.student-attendance-status.present {
+  background: #e9fff2;
+  color: #087536;
+}
+
+.student-attendance-status.absent {
+  background: #fff0f0;
+  color: #b42318;
+}
+
+.student-attendance-status.late {
+  background: #fff5d6;
+  color: #9a6500;
+}
+
+@media (max-width: 900px) {
+  .student-attendance-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .student-attendance-card {
+    grid-template-columns: 1fr;
+  }
+}
