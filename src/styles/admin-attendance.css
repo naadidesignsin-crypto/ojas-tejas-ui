@@ -1,0 +1,149 @@
+.admin-attendance-section {
+  display: grid;
+  gap: 20px;
+}
+
+.attendance-mark-card {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow:
+    0 18px 42px rgba(0, 74, 173, 0.1),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.28);
+}
+
+.attendance-form-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 0.7fr 0.7fr;
+  gap: 14px;
+}
+
+.attendance-form-grid label,
+.attendance-mark-card label {
+  display: grid;
+  gap: 7px;
+  color: #004aad;
+  font-weight: 950;
+}
+
+.attendance-form-grid span,
+.attendance-mark-card label span {
+  font-size: 0.86rem;
+}
+
+.attendance-form-grid select,
+.attendance-form-grid input,
+.attendance-mark-card textarea,
+.attendance-toolbar input,
+.attendance-toolbar select {
+  width: 100%;
+  min-height: 42px;
+  border: 2px solid rgba(0, 74, 173, 0.18);
+  border-radius: 14px;
+  padding: 9px 12px;
+  color: #004aad;
+  background: #ffffff;
+  font-family: inherit;
+  font-weight: 900;
+  outline: none;
+}
+
+.attendance-mark-card textarea {
+  resize: vertical;
+}
+
+.attendance-selected-student {
+  display: grid;
+  gap: 5px;
+  padding: 15px;
+  border-radius: 20px;
+  background: rgba(180, 219, 255, 0.55);
+  color: #004aad;
+}
+
+.attendance-selected-student strong {
+  font-size: 1.15rem;
+  font-weight: 950;
+}
+
+.attendance-selected-student span,
+.attendance-selected-student small {
+  font-weight: 850;
+}
+
+.attendance-mark-card button,
+.attendance-toolbar button {
+  border: 0;
+  border-radius: 999px;
+  background: #004aad;
+  color: #ffffff;
+  font-family: inherit;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.attendance-mark-card button {
+  width: 175px;
+  min-height: 44px;
+}
+
+.attendance-toolbar {
+  display: grid;
+  grid-template-columns: 1fr 170px 130px;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.attendance-toolbar button {
+  min-height: 42px;
+}
+
+.attendance-mark-card button:disabled,
+.attendance-toolbar button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-attendance-table {
+  min-width: 1150px;
+}
+
+.attendance-status {
+  display: inline-flex;
+  width: fit-content;
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+.attendance-status.present {
+  background: #e9fff2;
+  color: #087536;
+}
+
+.attendance-status.absent {
+  background: #fff0f0;
+  color: #b42318;
+}
+
+.attendance-status.late {
+  background: #fff5d6;
+  color: #9a6500;
+}
+
+@media (max-width: 900px) {
+  .attendance-form-grid,
+  .attendance-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .attendance-mark-card button,
+  .attendance-toolbar button {
+    width: 100%;
+  }
+}

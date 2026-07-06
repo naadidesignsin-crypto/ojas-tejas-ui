@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/ojas-logo-header.png";
 import { getStudentWorkshopBookings } from "../api/studentApi";
+import { getStudentAttendance } from "../api/attendanceApi";
 import "../styles/student-dashboard.css";
 
 function StudentPortalPage() {
@@ -8,6 +9,9 @@ function StudentPortalPage() {
   const [workshopBookings, setWorkshopBookings] = useState([]);
   const [workshopLoading, setWorkshopLoading] = useState(false);
   const [workshopError, setWorkshopError] = useState("");
+  const [attendanceSummary, setAttendanceSummary] = useState(null);
+  const [attendanceLoading, setAttendanceLoading] = useState(false);
+  const [attendanceError, setAttendanceError] = useState("");
 
   useEffect(() => {
     const savedData = sessionStorage.getItem("studentPortalData");
@@ -16,6 +20,7 @@ function StudentPortalPage() {
       const parsedData = JSON.parse(savedData);
       setStudentData(parsedData);
       loadWorkshopBookings(parsedData);
+      loadStudentAttendance(parsedData);
     }
   }, []);
 
@@ -37,6 +42,23 @@ function StudentPortalPage() {
     }
   };
 
+const loadStudentAttendance = async (data) => {
+  if (!data?.email || !data?.phone) {
+    return;
+  }
+
+  setAttendanceLoading(true);
+  setAttendanceError("");
+
+  try {
+    const result = await getStudentAttendance(data.email, data.phone);
+    setAttendanceSummary(result);
+  } catch (error) {
+    setAttendanceError(error.message || "Unable to load attendance.");
+  } finally {
+    setAttendanceLoading(false);
+  }
+};
   const formatDateTime = (value) => {
     if (!value) {
       return "Recently updated";
@@ -137,6 +159,12 @@ function StudentPortalPage() {
           <span>🧑‍🎨</span>
           <strong>{workshopBookings.length}</strong>
           <p>Workshop bookings</p>
+        </article>
+
+        <article>
+          <span>📊</span>
+          <strong>{attendanceSummary?.attendancePercentage || 0}%</strong>
+          <p>Attendance</p>
         </article>
       </section>
 
@@ -285,6 +313,93 @@ function StudentPortalPage() {
               </article>
             ))}
           </div>
+        )}
+      </section>
+      <section className="student-dashboard-panel student-attendance-panel">
+        <div className="student-dashboard-title">
+          <div>
+            <h2>My Attendance</h2>
+            <p>Track your class attendance and teacher notes.</p>
+          </div>
+
+          <span>{attendanceSummary?.totalClasses || 0} classes</span>
+        </div>
+
+        {attendanceLoading && (
+          <div className="student-dashboard-no-class">
+            <h3>Loading attendance...</h3>
+          </div>
+        )}
+
+        {attendanceError && (
+          <div className="student-dashboard-no-class error">
+            <h3>Unable to load attendance</h3>
+            <p>{attendanceError}</p>
+
+            <button onClick={() => loadStudentAttendance(studentData)}>
+              Try Again
+            </button>
+          </div>
+        )}
+
+        {!attendanceLoading && !attendanceError && attendanceSummary && (
+          <>
+            <div className="student-attendance-summary">
+              <article>
+                <strong>{attendanceSummary.totalClasses}</strong>
+                <p>Total classes</p>
+              </article>
+
+              <article>
+                <strong>{attendanceSummary.presentCount}</strong>
+                <p>Present</p>
+              </article>
+
+              <article>
+                <strong>{attendanceSummary.lateCount}</strong>
+                <p>Late</p>
+              </article>
+
+              <article>
+                <strong>{attendanceSummary.absentCount}</strong>
+                <p>Absent</p>
+              </article>
+
+              <article>
+                <strong>{attendanceSummary.attendancePercentage}%</strong>
+                <p>Attendance</p>
+              </article>
+            </div>
+
+            {attendanceSummary.records.length === 0 ? (
+              <div className="student-dashboard-no-class">
+                <h3>No attendance marked yet</h3>
+                <p>
+                  Attendance records will appear here after admin marks class
+                  attendance.
+                </p>
+              </div>
+            ) : (
+              <div className="student-attendance-list">
+                {attendanceSummary.records.map((record) => (
+                  <article className="student-attendance-card" key={record.id}>
+                    <div>
+                      <strong>{record.classTitle}</strong>
+                      <small>{record.classDate}</small>
+                    </div>
+
+                    <span
+                      className={`student-attendance-status ${record.status.toLowerCase()}`}
+                    >
+                      {record.status}
+                    </span>
+
+                    {record.note && <p>{record.note}</p>}
+                  </article>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </section>
     </main>

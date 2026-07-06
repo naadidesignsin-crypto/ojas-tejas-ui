@@ -10,6 +10,7 @@ import AdminWorkshops from "./AdminWorkshops.jsx";
 import AdminWorkshopBookings from "./AdminWorkshopBookings.jsx";
 import AdminContactInquiries from "./AdminContactInquiries.jsx";
 import AdminStudents from "./AdminStudents.jsx";
+import AdminAttendance from "./AdminAttendance.jsx";
 import "../styles/admin.css";
 
 function AdminPage() {
@@ -182,8 +183,8 @@ function AdminPage() {
         <div className="admin-login-card">
           <h1>🎨 Ojas Admin Login</h1>
           <p>
-            Login to manage students, demo links, artworks, workshops, and
-            inquiries.
+            Login to manage students, demo links, attendance, artworks,
+            workshops, and inquiries.
           </p>
 
           <form onSubmit={handleLogin}>
@@ -220,8 +221,9 @@ function AdminPage() {
             <span className="admin-eyebrow">Admin Portal</span>
             <h1>📋 Ojas Dashboard</h1>
             <p>
-              Manage students, demo links, student artworks, workshops, workshop
-              bookings, and contact inquiries from one clean place.
+              Manage students, demo links, attendance, student artworks,
+              workshops, workshop bookings, and contact inquiries from one clean
+              place.
             </p>
           </div>
 
@@ -278,6 +280,19 @@ function AdminPage() {
             <span>🔗</span>
             <strong>{totalSentLinks}</strong>
             <small>Live links sent</small>
+          </button>
+
+          <button
+            className={
+              activeTab === "attendance"
+                ? "admin-summary-card active"
+                : "admin-summary-card"
+            }
+            onClick={() => setActiveTab("attendance")}
+          >
+            <span>🗓️</span>
+            <strong>Mark</strong>
+            <small>Attendance</small>
           </button>
 
           <button
@@ -356,6 +371,13 @@ function AdminPage() {
           </button>
 
           <button
+            className={activeTab === "attendance" ? "active" : ""}
+            onClick={() => setActiveTab("attendance")}
+          >
+            Attendance
+          </button>
+
+          <button
             className={activeTab === "artworks" ? "active" : ""}
             onClick={() => setActiveTab("artworks")}
           >
@@ -418,6 +440,18 @@ function AdminPage() {
 
                 <button onClick={() => setActiveTab("demo")}>
                   Open Demo Links
+                </button>
+              </article>
+
+              <article>
+                <h3>🗓️ Attendance</h3>
+                <p>
+                  Mark present, absent, or late status for students and let
+                  parents track attendance from the student dashboard.
+                </p>
+
+                <button onClick={() => setActiveTab("attendance")}>
+                  Mark Attendance
                 </button>
               </article>
 
@@ -588,6 +622,12 @@ function AdminPage() {
                 </tbody>
               </table>
             </div>
+          </section>
+        )}
+
+        {activeTab === "attendance" && (
+          <section className="admin-clean-panel">
+            <AdminAttendance authToken={authToken} bookings={bookings} />
           </section>
         )}
 
