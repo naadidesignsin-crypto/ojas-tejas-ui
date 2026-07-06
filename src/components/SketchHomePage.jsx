@@ -50,6 +50,87 @@ const getSavedStudentName = () => {
   }
 };
 
+const quickMenuItems = [
+  {
+    icon: "📘",
+    label: "About Us",
+    target: "different"
+  },
+  {
+    icon: "🎨",
+    label: "Courses",
+    target: "programs"
+  },
+  {
+    icon: "🖥️",
+    label: "Live Classes",
+    target: "classes"
+  },
+  {
+    icon: "✂️",
+    label: "Workshops",
+    action: "workshops"
+  },
+  {
+    icon: "🖼️",
+    label: "Gallery",
+    target: "student-gallery"
+  },
+  {
+    icon: "🧑‍🎨",
+    label: "Activities",
+    action: "activity"
+  },
+  {
+    icon: "⭐",
+    label: "Why Us",
+    target: "different"
+  },
+  {
+    icon: "🧒",
+    label: "For Kids",
+    target: "trial"
+  },
+  {
+    icon: "📞",
+    label: "Contact Us",
+    target: "contact"
+  }
+];
+
+const differentItems = [
+  {
+    image: storyLedTeaching,
+    title: "Story-led Teaching",
+    text: "Every class begins with imagination, stories, and creative prompts."
+  },
+  {
+    image: smallGroups,
+    title: "Small Groups",
+    text: "Personal attention helps every child feel confident and supported."
+  },
+  {
+    image: conceptCreateColor,
+    title: "Concept. Create. Color.",
+    text: "Children understand ideas first, then create and color with purpose."
+  },
+  {
+    image: artTrainedEducator,
+    title: "Art-trained Educator",
+    text: "Guided sessions by experienced art educators for young learners."
+  },
+  {
+    image: liveOnlineArtClasses,
+    title: "Live Online Classes",
+    text: "Interactive classes that children can enjoy from home."
+  },
+  {
+    image: artWorkshops,
+    title: "Creative Workshops",
+    text: "Themed art workshops for seasonal and special creative projects."
+  }
+];
+
 function SketchHomePage() {
   const videoRef = useRef(null);
 
@@ -125,6 +206,20 @@ function SketchHomePage() {
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const handleQuickMenuClick = (item) => {
+    if (item.action === "workshops") {
+      setShowWorkshopModal(true);
+      return;
+    }
+
+    if (item.action === "activity") {
+      setShowActivityModal(true);
+      return;
+    }
+
+    scrollTo(item.target);
   };
 
   const playIntroVideo = async () => {
@@ -269,14 +364,10 @@ function SketchHomePage() {
               Logout
             </button>
           )}
-
-          {/* <span>●</span>
-          <span>●</span>
-          <span>●</span> */}
         </div>
       </div>
 
-      <header className="sketch-header">
+      <header className="sketch-header paper-header">
         <button className="sketch-logo" onClick={() => scrollTo("home")}>
           <img src={logo} alt="Ojas by Tejas" />
         </button>
@@ -285,40 +376,58 @@ function SketchHomePage() {
           <button onClick={() => scrollTo("home")}>Home</button>
 
           <button onClick={() => scrollTo("classes")}>
-            Live online classes
+            Live Online Classes
           </button>
 
           <button onClick={() => scrollTo("trial")}>Free Demo</button>
 
           <button onClick={() => scrollTo("student-gallery")}>Gallery</button>
 
-          <button onClick={() => scrollTo("faq")}>FAQ</button>
+          <button onClick={() => scrollTo("different")}>About</button>
 
           <button onClick={() => scrollTo("contact")}>Contact</button>
 
+          {!studentLoggedIn && !adminLoggedIn && (
+            <>
+              <button
+                className="demo-nav-btn"
+                onClick={() => scrollTo("trial")}
+              >
+                Book Demo Class
+              </button>
 
-            {!studentLoggedIn && !adminLoggedIn && (
               <button className="admin-nav-btn" onClick={openLogin}>
                 Login
               </button>
-            )}
-
+            </>
+          )}
         </nav>
       </header>
 
       <main>
-        <section className="sketch-hero" id="home">
-          <div className="trial-card" id="trial">
+        <section className="sketch-hero paper-hero" id="home">
+          <div className="trial-card paper-trial-card" id="trial">
             <div className="hero-title-wrap">
+              <span className="hero-pencil-label">
+                Creative Online Art Classes
+              </span>
+
               <h1>
                 <span>
                   {studentLoggedIn
                     ? "Student Dashboard Access"
                     : adminLoggedIn
                     ? "Admin Dashboard Access"
-                    : "Book a free Trial Session"}
+                    : "Where Imagination Meets Creation!"}
                 </span>
               </h1>
+
+              {!studentLoggedIn && !adminLoggedIn && (
+                <p className="hero-sub-copy">
+                  Creative art classes that inspire, build skills, and bring out
+                  the artist in every child.
+                </p>
+              )}
 
               <div className="hero-art-burst" aria-hidden="true">
                 <span className="art-float art-float-1">🎨</span>
@@ -466,7 +575,7 @@ function SketchHomePage() {
                   </select>
 
                   <button type="submit" disabled={loading}>
-                    {loading ? "Registering..." : "Register now"}
+                    {loading ? "Registering..." : "Book Your Demo Class"}
                   </button>
 
                   {formMessage && (
@@ -518,44 +627,63 @@ function SketchHomePage() {
           </div>
         </section>
 
-        <section className="different-section" id="different">
-          <div className="section-title-wrap client-different-title">
-            <h2>What makes Ojasbytejas different from?</h2>
+        <section className="art-quick-menu-section">
+          <div className="art-quick-menu">
+            {quickMenuItems.map((item) => (
+              <button
+                type="button"
+                className="art-quick-item"
+                key={item.label}
+                onClick={() => handleQuickMenuClick(item)}
+              >
+                <span>{item.icon}</span>
+                <strong>{item.label}</strong>
+              </button>
+            ))}
           </div>
+        </section>
 
-          <div className="client-different-grid">
-            <article className="client-difference-card">
-              <img src={storyLedTeaching} alt="Story-led teaching" />
-              <h3>Story-led teaching</h3>
-            </article>
+        <section className="different-section why-tear-section" id="different">
+          <div className="why-tear-panel">
+            <div className="section-title-wrap client-different-title why-tear-title">
+              <span className="section-pencil-label">Why Choose Us?</span>
 
-            <article className="client-difference-card">
-              <img src={smallGroups} alt="Small groups" />
-              <h3>small groups</h3>
-            </article>
+              <h2>Why Choose Ojas by Tejas?</h2>
 
-            <article className="client-difference-card">
-              <img src={conceptCreateColor} alt="Concept create color" />
-              <h3>Concept. create. Color</h3>
-            </article>
+              <p>
+                A playful, supportive, and skill-building art space for children.
+              </p>
+            </div>
 
-            <article className="client-difference-card">
-              <img src={artTrainedEducator} alt="Art trained educator" />
-              <h3>Art trained educator</h3>
-            </article>
+            <div className="difference-marquee why-tear-marquee">
+              <div className="difference-marquee-track why-tear-track">
+                {[...differentItems, ...differentItems].map((item, index) => (
+                  <article className="why-tear-card" key={index}>
+                    <img src={item.image} alt={item.title} />
+
+                    <div>
+                      <h3>{item.title}</h3>
+                      <p>{item.text}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
         <section
-          className="programs-section client-programs-section"
+          className="programs-section client-programs-section paper-programs"
           id="programs"
         >
-          <h2>Our programs</h2>
+          <span className="section-pencil-label">Creative Learning Paths</span>
+
+          <h2>Our Popular Programs</h2>
 
           <div className="client-programs-grid">
             <article className="client-program-card" id="classes">
               <img src={liveOnlineArtClasses} alt="Live online art classes" />
-              <h3>Live online art classes</h3>
+              <h3>Live Online Art Classes</h3>
               <p>Fun, weekly, hour-long creative classes.</p>
 
               <button onClick={() => scrollTo("trial")}>
@@ -565,7 +693,7 @@ function SketchHomePage() {
 
             <article className="client-program-card">
               <img src={summerArtCamp} alt="Summer art camp" />
-              <h3>Summer art camp</h3>
+              <h3>Summer Art Camp</h3>
               <p>Inspiring, creative classes during break.</p>
 
               <button onClick={() => scrollTo("trial")}>
@@ -575,7 +703,7 @@ function SketchHomePage() {
 
             <article className="client-program-card">
               <img src={artWorkshops} alt="Art workshops" />
-              <h3>Art workshops</h3>
+              <h3>Art Workshops</h3>
               <p>Exciting themed workshops for kids.</p>
 
               <button onClick={() => setShowWorkshopModal(true)}>
@@ -595,7 +723,7 @@ function SketchHomePage() {
 
             <article className="client-program-card">
               <img src={artGallery} alt="Art gallery" />
-              <h3>Art gallery</h3>
+              <h3>Art Gallery</h3>
               <p>Student artworks approved by admin.</p>
 
               <button onClick={() => scrollTo("student-gallery")}>
@@ -605,7 +733,7 @@ function SketchHomePage() {
 
             <article className="client-program-card">
               <img src={creativeCourses} alt="Creative courses" />
-              <h3>Creative courses</h3>
+              <h3>Creative Courses</h3>
               <p>Drawing, coloring, craft, and imagination.</p>
 
               <button onClick={() => scrollTo("trial")}>
@@ -622,20 +750,22 @@ function SketchHomePage() {
         <ContactInquiryForm onBookDemo={() => scrollTo("trial")} />
       </main>
 
-      <footer className="sketch-footer">
+      <footer className="sketch-footer paper-footer">
         <div>
           <img src={logoFooter} alt="Ojas by Tejas" />
           <p>Trunkful of Colors, Brushful of Dreams</p>
         </div>
 
         <div>
-          <h4>Contact</h4>
-          <p>📞 (201) 555-0123</p>
-          <p>✉️ hello@ojasbytejas.com</p>
+          <h4>Quick Links</h4>
+          <p>Home • Live Online Classes • Free Demo</p>
+          <p>Gallery • Workshops • Contact</p>
         </div>
 
         <div>
-          <h4>Follow Us</h4>
+          <h4>Contact</h4>
+          <p>📞 (201) 555-0123</p>
+          <p>✉️ hello@ojasbytejas.com</p>
           <p>Instagram • Facebook • YouTube</p>
         </div>
       </footer>
