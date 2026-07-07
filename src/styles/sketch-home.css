@@ -2981,3 +2981,548 @@ video,
     height: 82px !important;
   }
 }
+
+/* =====================================================
+   FINAL RESPONSIVE OVERRIDE
+   Desktop + Tablet + Mobile
+   Paste this at the VERY BOTTOM of sketch-home.css
+   ===================================================== */
+
+/* -------------------------
+   GLOBAL RESPONSIVE SAFETY
+   ------------------------- */
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.sketch-page {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.sketch-page img,
+.sketch-page video {
+  max-width: 100%;
+}
+
+/* -------------------------
+   DESKTOP: 1200px and above
+   ------------------------- */
+
+@media (min-width: 1200px) {
+  .sketch-page .sketch-header {
+    padding-left: clamp(36px, 5vw, 84px) !important;
+    padding-right: clamp(36px, 5vw, 84px) !important;
+  }
+
+  .sketch-page .sketch-nav {
+    gap: clamp(14px, 1.6vw, 30px) !important;
+  }
+
+  .sketch-page .sketch-nav button {
+    font-size: clamp(0.78rem, 0.85vw, 0.95rem) !important;
+  }
+
+  .sketch-page .sketch-hero {
+    display: grid !important;
+    grid-template-columns: minmax(320px, 0.52fr) minmax(720px, 1.48fr) !important;
+    gap: 10px !important;
+    align-items: start !important;
+    width: 100% !important;
+    max-width: 1440px !important;
+    margin: 0 auto !important;
+    padding: 18px clamp(28px, 3.5vw, 56px) 10px !important;
+    min-height: auto !important;
+  }
+
+  .sketch-page .trial-card,
+  .sketch-page .paper-trial-card {
+    width: 100% !important;
+    max-width: 360px !important;
+    padding: 14px 15px !important;
+  }
+
+  .sketch-page .trial-card h1 {
+    font-size: clamp(2rem, 2.6vw, 2.9rem) !important;
+    line-height: 1.04 !important;
+  }
+
+  .sketch-page .hero-sub-copy {
+    max-width: 310px !important;
+    font-size: 0.84rem !important;
+    line-height: 1.38 !important;
+  }
+
+  .sketch-page .trial-card form,
+  .sketch-page .paper-trial-card form {
+    max-width: 300px !important;
+    padding: 11px 13px !important;
+    gap: 8px !important;
+  }
+
+  .sketch-page .realistic-video-easel {
+    min-height: 0 !important;
+    height: auto !important;
+    padding-top: 34px !important;
+    padding-bottom: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    overflow: visible !important;
+  }
+
+  .sketch-page .real-board-wrap {
+    width: clamp(780px, 68vw, 1080px) !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    aspect-ratio: 287 / 230 !important;
+    margin-left: -90px !important;
+    margin-right: -90px !important;
+  }
+
+  .sketch-page .art-quick-menu {
+    grid-template-columns: repeat(9, minmax(74px, 1fr)) !important;
+  }
+
+  .sketch-page .client-programs-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+/* -------------------------
+   TABLET: 768px to 1199px
+   ------------------------- */
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .sketch-page .sketch-top-strip {
+    padding-left: 28px !important;
+    padding-right: 28px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .sketch-page .sketch-header {
+    padding: 12px 28px !important;
+    gap: 18px !important;
+  }
+
+  .sketch-page .sketch-logo img {
+    width: 125px !important;
+  }
+
+  .sketch-page .sketch-nav {
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+  }
+
+  .sketch-page .sketch-nav button {
+    font-size: 0.76rem !important;
+  }
+
+  .sketch-page .demo-nav-btn {
+    min-width: 132px !important;
+    min-height: 46px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .sketch-page .admin-nav-btn {
+    min-width: 76px !important;
+    min-height: 36px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .sketch-page .sketch-hero {
+    display: grid !important;
+    grid-template-columns: 320px minmax(0, 1fr) !important;
+    gap: 12px !important;
+    align-items: start !important;
+    width: 100% !important;
+    max-width: none !important;
+    padding: 16px 24px 18px !important;
+    min-height: auto !important;
+  }
+
+  .sketch-page .trial-card,
+  .sketch-page .paper-trial-card {
+    width: 100% !important;
+    max-width: 320px !important;
+    padding: 12px !important;
+  }
+
+  .sketch-page .trial-card h1 {
+    font-size: 1.75rem !important;
+    line-height: 1.04 !important;
+  }
+
+  .sketch-page .hero-sub-copy {
+    font-size: 0.76rem !important;
+    line-height: 1.34 !important;
+  }
+
+  .sketch-page .trial-card form,
+  .sketch-page .paper-trial-card form {
+    max-width: 270px !important;
+    padding: 10px 11px !important;
+    gap: 7px !important;
+  }
+
+  .sketch-page .trial-card input,
+  .sketch-page .trial-card select {
+    font-size: 0.76rem !important;
+    padding: 5px 3px !important;
+  }
+
+  .sketch-page .trial-card button[type="submit"] {
+    width: 165px !important;
+    height: 48px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .sketch-page .realistic-tools {
+    width: 115px !important;
+  }
+
+  .sketch-page .realistic-video-easel {
+    min-height: 0 !important;
+    height: auto !important;
+    padding-top: 32px !important;
+    padding-bottom: 0 !important;
+    align-items: flex-start !important;
+    overflow: visible !important;
+  }
+
+  .sketch-page .real-board-wrap {
+    width: clamp(600px, 66vw, 820px) !important;
+    max-width: none !important;
+    aspect-ratio: 287 / 230 !important;
+    margin-left: -70px !important;
+    margin-right: -70px !important;
+  }
+
+  .sketch-page .art-quick-menu-section {
+    padding-top: 14px !important;
+    padding-bottom: 28px !important;
+  }
+
+  .sketch-page .art-quick-menu {
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .sketch-page .why-tear-section {
+    padding-top: 32px !important;
+    padding-bottom: 44px !important;
+  }
+
+  .sketch-page .why-tear-panel {
+    width: 112vw !important;
+    min-height: 540px !important;
+    padding: 68px 70px 110px !important;
+  }
+
+  .sketch-page .why-tear-title h2,
+  .sketch-page .client-different-title h2 {
+    font-size: 2.6rem !important;
+  }
+
+  .sketch-page .why-tear-marquee,
+  .sketch-page .difference-marquee {
+    max-width: 900px !important;
+  }
+
+  .sketch-page .client-programs-section,
+  .sketch-page .programs-section {
+    padding: 42px 38px 54px !important;
+  }
+
+  .sketch-page .client-programs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 42px 36px !important;
+    max-width: 780px !important;
+  }
+
+  .sketch-page .client-program-card {
+    min-height: 390px !important;
+  }
+
+  .sketch-page .client-program-card img {
+    height: 190px !important;
+  }
+
+  .sketch-page .sketch-footer {
+    grid-template-columns: 1fr 1fr 1fr !important;
+    padding: 34px 38px !important;
+  }
+}
+
+/* -------------------------
+   MOBILE: 767px and below
+   ------------------------- */
+
+@media (max-width: 767px) {
+  .sketch-page::before,
+  .sketch-page::after {
+    display: none !important;
+  }
+
+  .sketch-page .sketch-top-strip {
+    min-height: 34px !important;
+    height: auto !important;
+    padding: 7px 14px !important;
+    font-size: 0.68rem !important;
+    gap: 8px !important;
+  }
+
+  .sketch-page .sketch-top-strip > span {
+    max-width: 55% !important;
+    line-height: 1.25 !important;
+  }
+
+  .sketch-page .student-login-chip {
+    max-width: 120px !important;
+    font-size: 0.68rem !important;
+    padding: 4px 8px !important;
+  }
+
+  .sketch-page .top-logout-btn {
+    font-size: 0.68rem !important;
+    padding: 4px 8px !important;
+  }
+
+  .sketch-page .sketch-header {
+    position: relative !important;
+    min-height: auto !important;
+    padding: 12px 16px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .sketch-page .sketch-logo img {
+    width: 118px !important;
+  }
+
+  .sketch-page .sketch-nav {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .sketch-page .sketch-nav button {
+    min-height: 34px !important;
+    padding: 6px 8px !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.55) !important;
+    font-size: 0.72rem !important;
+    text-align: center !important;
+  }
+
+  .sketch-page .demo-nav-btn,
+  .sketch-page .admin-nav-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 42px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .sketch-page .sketch-hero {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 14px 16px 20px !important;
+    min-height: auto !important;
+  }
+
+  .sketch-page .trial-card,
+  .sketch-page .paper-trial-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 14px !important;
+    border-radius: 24px !important;
+  }
+
+  .sketch-page .hero-title-wrap {
+    width: 100% !important;
+    margin-bottom: 12px !important;
+  }
+
+  .sketch-page .trial-card h1 {
+    width: 100% !important;
+    font-size: 2rem !important;
+    line-height: 1.05 !important;
+    text-align: left !important;
+  }
+
+  .sketch-page .hero-sub-copy {
+    max-width: 100% !important;
+    font-size: 0.82rem !important;
+    line-height: 1.4 !important;
+  }
+
+  .sketch-page .hero-art-burst {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: 62px !important;
+    margin-top: 8px !important;
+  }
+
+  .sketch-page .trial-card form,
+  .sketch-page .paper-trial-card form {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 11px 12px !important;
+  }
+
+  .sketch-page .trial-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sketch-page .trial-card button[type="submit"] {
+    width: 180px !important;
+    height: 52px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .sketch-page .realistic-tools {
+    width: 125px !important;
+    margin-top: 6px !important;
+  }
+
+  .sketch-page .realistic-video-easel {
+    min-height: auto !important;
+    height: auto !important;
+    padding-top: 4px !important;
+    padding-bottom: 0 !important;
+    overflow: visible !important;
+  }
+
+  .sketch-page .real-board-wrap {
+    width: min(100%, 420px) !important;
+    max-width: 420px !important;
+    min-width: 0 !important;
+    margin: 0 auto !important;
+    aspect-ratio: 287 / 230 !important;
+  }
+
+  .sketch-page .intro-play-button-real {
+    width: 66px !important;
+    height: 66px !important;
+    font-size: 1.8rem !important;
+  }
+
+  .sketch-page .art-quick-menu-section {
+    padding: 14px 16px 24px !important;
+  }
+
+  .sketch-page .art-quick-menu {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .sketch-page .art-quick-item {
+    min-height: 92px !important;
+    border-radius: 22px !important;
+  }
+
+  .sketch-page .why-tear-section {
+    padding: 28px 0 36px !important;
+  }
+
+  .sketch-page .why-tear-panel {
+    width: 118vw !important;
+    min-height: 500px !important;
+    padding: 54px 34px 96px !important;
+  }
+
+  .sketch-page .why-tear-panel::before {
+    background-size: auto 100% !important;
+    background-repeat: repeat-x !important;
+  }
+
+  .sketch-page .why-tear-title h2,
+  .sketch-page .client-different-title h2 {
+    font-size: 2rem !important;
+    line-height: 1.05 !important;
+  }
+
+  .sketch-page .why-tear-title p,
+  .sketch-page .client-different-title p {
+    font-size: 0.78rem !important;
+  }
+
+  .sketch-page .why-tear-marquee,
+  .sketch-page .difference-marquee {
+    max-width: 100% !important;
+  }
+
+  .sketch-page .why-tear-card,
+  .sketch-page .difference-slide-card {
+    width: 185px !important;
+  }
+
+  .sketch-page .why-tear-card img,
+  .sketch-page .difference-slide-card img {
+    width: 100px !important;
+    height: 76px !important;
+  }
+
+  .sketch-page .why-tear-card h3,
+  .sketch-page .difference-slide-card h3 {
+    font-size: 0.96rem !important;
+  }
+
+  .sketch-page .why-tear-card p,
+  .sketch-page .difference-slide-card p {
+    font-size: 0.7rem !important;
+  }
+
+  .sketch-page .client-programs-section,
+  .sketch-page .programs-section {
+    padding: 34px 16px 44px !important;
+  }
+
+  .sketch-page .client-programs-section h2,
+  .sketch-page .programs-section h2 {
+    font-size: 2.2rem !important;
+    margin-bottom: 28px !important;
+  }
+
+  .sketch-page .client-programs-grid {
+    grid-template-columns: 1fr !important;
+    gap: 34px !important;
+  }
+
+  .sketch-page .client-program-card {
+    min-height: auto !important;
+    padding: 22px 16px 26px !important;
+  }
+
+  .sketch-page .client-program-card img {
+    height: 190px !important;
+  }
+
+  .sketch-page .student-gallery-section,
+  .sketch-page .student-gallery-placeholder,
+  .sketch-page .testimonials-faq-section,
+  .sketch-page .testimonials-section,
+  .sketch-page .faq-section,
+  .sketch-page .contact-inquiry-section,
+  .sketch-page .contact-section {
+    padding: 38px 16px 42px !important;
+  }
+
+  .sketch-page .sketch-footer {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+    padding: 30px 16px !important;
+  }
+}
